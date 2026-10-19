@@ -16,8 +16,15 @@ $(BUILD)/%.o: %.cpp | $(BUILD)
 $(BUILD):
 	mkdir -p $@
 
+# `make run <args...>`: todo lo que sigue a "run" se pasa al binario.
+# Los argumentos se declaran como targets vacíos para que make no intente construirlos.
+ifeq (run,$(firstword $(MAKECMDGOALS)))
+  RUN_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+  $(eval $(RUN_ARGS):;@:)
+endif
+
 run: $(TARGET)
-	./$(TARGET)
+	./$(TARGET) $(RUN_ARGS)
 
 clean:
 	rm -rf $(BUILD) $(TARGET)
