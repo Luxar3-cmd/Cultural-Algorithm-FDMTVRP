@@ -38,16 +38,25 @@ Se adopta la convención del paper FDMTVRP:
 
 ## Representación
 
-La representación elegida para este trabajo, entrega la siguiente información:
+Codificación directa: la solución es un vector con una `Route` por vehículo (índice = vehículo). Una `Route` guarda el depósito de inicio y una lista de `Trip`; cada `Trip` guarda sus clientes en orden y el depósito al que retorna.
 
-- Cantidad de Trips
-- Qué visita cada Trip (Depósito, Cliente)
+```
+struct Trip  { vector<int> clientes; int retorno; };
+struct Route { int inicio; vector<Trip> trips; };
+```
 
-Ejemplo:
+Cada depósito de corte se guarda **una sola vez**: el trip *i+1* parte del `retorno` del trip *i*, y el trip 1 parte de `inicio`. Así la continuidad queda garantizada por construcción y ningún operador puede dejarla inconsistente. La cantidad de trips es `trips.size()`; una route vacía es un vehículo no utilizado. El cierre de la route es el `retorno` del último trip, que debe cumplir `puedeRecargar` y `puedeTerminar` para ese vehículo.
 
-\[(D1 C2 C7 D1),(D1 C4 C3 C5 D2),(D2 C1 C6 D1)\]
+Ejemplo (índices internos; D1, D2 depósitos, C clientes):
 
-Sería una Route de la cual se desprenden 3 trips, cada uno visitando distintos clientes y depósitos en el orden establecido.
+```
+Route { inicio: D1,
+        trips: [ { [C2, C7],     retorno: D1 },
+                 { [C4, C3, C5], retorno: D2 },
+                 { [C1, C6],     retorno: D1 } ] }
+```
+
+Equivale al recorrido `D1 → C2 → C7 → D1 → C4 → C3 → C5 → D2 → C1 → C6 → D1`: tres trips, recarga en D1 y D2, cierre en D1.
 
 ## Lectura de instancia: un depósito, tres identificadores
 
