@@ -168,6 +168,8 @@ void inicializarInstancia(Instancia& inst, const string& filename) {
 }
 
 void imprimirResumen(const Instancia& inst) {
+    cout << " --------------- Resumen de la instancia ---------------" << endl;
+
     cout << "nodos: " << inst.idxToId.size()
          << "  depots: " << inst.depots.size()
          << "  clientes: " << inst.clientsC.size()
