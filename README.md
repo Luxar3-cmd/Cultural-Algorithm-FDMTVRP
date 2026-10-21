@@ -1,6 +1,5 @@
 Este es el primer push
 
-
 Decisiones que debo tomar:
 
 - Con qué algoritmo me voy a comparar. (Yo creo que con el del paper FDMTVRP)
@@ -34,7 +33,7 @@ Se adopta la convención del paper FDMTVRP:
 
 - **Route**: Jornada completa de un vehículo, desde un depósito de inicio (`D_start`) hasta uno de fin (`D_end`). Está compuesta de Trips. Cada vehículo tiene a lo más una route; puede quedar vacía (vehículo no utilizado).
 - **Trip**: Cada salida y regreso dentro de la route: parte de un depósito, visita un subconjunto de clientes y retorna a un depósito (`D_in`, o `D_end` si es el último). El depósito de retorno del trip *i* es el de partida del trip *i+1*.
-- **V** (`T` en el paper): Índices de trip por vehículo. En las instancias `V = {1,2,3}`; para comparar con el MILP se impone un máximo de 3 trips por route.
+- **V** (`T` en el paper): Índices de trip por vehículo. En las instancias `V = {1,2,3}`, cota del MILP. En el algoritmo el máximo de trips por route es el parámetro `maxTrips` (por defecto `|V|`; `0` = sin límite), porque en el set E con 2 vehículos no hay solución con 3 trips: `2 × 3 × 15 = 90 < 100`.
 
 ## Representación
 
@@ -68,5 +67,35 @@ En el mapa hay 3 depósitos. En el archivo `.dat` cada uno aparece tres veces, c
 Vehiculo { puedeSalir[d], puedeRecargar[d], puedeTerminar[d] }   // d = índice del depósito
 ```
 
+## Manejo de restricciones
 
+| Restricción | Método |
+|---|---|
+| Continuidad de depósitos entre trips | Codificación restringida: el depósito de corte se guarda una vez (`Trip.retorno`). |
+| Cada cliente exactamente una vez | Codificación restringida: los operadores mueven clientes, no los copian. |
+| Permisos de depósito por vehículo | Codificación restringida: los operadores solo eligen depósitos permitidos. |
+| ≤ `maxTrips` por route, trip sin clientes | Codificación restringida: los operadores no crean trips de más ni dejan trips vacíos. |
+| Carga de un trip ≤ `cap` | Penalización (`excesoCarga`). |
+| Tiempo de una route ≤ `tMax` | Penalización (`excesoTiempo`). |
 
+Durante la búsqueda la población admite soluciones con exceso de carga o tiempo. La solución entregada se elige entre las factibles (`Evaluacion::factible()`); si hiciera falta, se repara solo al entregar.
+
+## Función de evaluación
+
+```
+Evaluacion { tiempo, excesoCarga, excesoTiempo }
+fitness = tiempo + λ_cap · excesoCarga + λ_t · excesoTiempo
+```
+
+`tiempo` es la suma de `time[i][j]` sobre el recorrido de todas las routes, el mismo objetivo del paper; el paso de un trip al siguiente no suma porque ocurre en el mismo depósito. `evaluar` aborta si la solución usa un arco inexistente (`INF`): es un error estructural, no un exceso penalizable. Los `λ` son parámetros del algoritmo, no del problema; se entregan por línea de comandos.
+
+## Inicialización
+
+Greedy pseudoaleatorio con lista restringida de candidatos (RCL), el mismo constructor del paper, para que las diferencias en resultados se atribuyan al algoritmo cultural y no al punto de partida. `inicializarSolucion` arma la route de cada vehículo en orden (secuencial):
+
+1. Depósito de salida: sorteo uniforme entre los que el vehículo `puedeSalir`.
+2. Siguiente cliente: entre los no servidos que caben en `cap`, se ordenan por tiempo desde el nodo actual y se sortea uno de los `rcl · |C|` más cercanos.
+3. Cierre del trip: cuando ningún cliente cabe. Retorna al depósito más cercano que `puedeRecargar`; si es el último trip de la route (`maxTrips` alcanzado o sin clientes), además `puedeTerminar`.
+4. Sin cupo: si se agotan los vehículos y quedan clientes, van al último trip con exceso de carga. La estructura siempre es válida; `cap` y `tmax` los paga el fitness.
+
+Parámetros: `rcl`, `maxTrips`, semilla. Misma semilla, misma población. Alternativas descartadas: inserción más barata con pesos por individuo (Li et al. 2016, asigna cada cliente al depósito más cercano, que es lo que el FDMTVRP deja libre), ahorros en dos fases, sweep (sin coordenadas), giant tour + split.
