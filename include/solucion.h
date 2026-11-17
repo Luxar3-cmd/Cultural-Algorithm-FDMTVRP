@@ -38,7 +38,9 @@ struct Parametros {
     int maxTrips; // Cantidad máxima de trips
     double lambdaCap, lambdaT; // Pesos que castigan Capacidad y Tiempo excedido
     int poblacion; // Tamaño de la población
+    int nGeneraciones; // Cuantas generaciones habrán
     unsigned semilla; // It is what it is.
+    double PorcentajeMejor; // Fracción de la población que alimenta el espacio de creencias normativo.
 };
 
 // Una solución tiene una route por vehículo; el índice es el vehículo.
@@ -76,9 +78,10 @@ double fitness(const Evaluacion& e, double lambdaCap, double lambdaT);
 Solucion inicializarSolucion(const Instancia& inst, const Parametros& p, std::mt19937& rng);
 
 /**
- * TODO: Implementar cuando el algoritmo cultural se tenga que cocinar.
+ * Crea p.poblacion individuos: cada uno se construye con inicializarSolucion y se evalúa al nacer,
+ * de modo que sol, eval y fitness quedan coherentes. No ordena la población.
  */
-std::vector<Solucion> inicializarPoblacion(const Instancia& inst, const Parametros& p, std::mt19937& rng);
+std::vector<Individuo> inicializarPoblacion(const Instancia& inst, const Parametros& p, std::mt19937& rng);
 
 // Imprime cada route con IDs de la instancia (inicio, clientes, depósito de retorno de cada trip)
 // y la evaluación: tiempo, excesos y factibilidad.

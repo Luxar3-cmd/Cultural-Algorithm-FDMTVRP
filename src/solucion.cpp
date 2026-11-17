@@ -140,6 +140,16 @@ Solucion inicializarSolucion(const Instancia& inst, const Parametros& p, std::mt
     return sol;
 }
 
+vector<Individuo> inicializarPoblacion(const Instancia& inst, const Parametros& p, std::mt19937& rng) {
+    vector<Individuo> poblacion(p.poblacion);
+    for (Individuo& ind : poblacion) {
+        ind.sol = inicializarSolucion(inst, p, rng);
+        ind.eval = evaluar(inst, ind.sol);
+        ind.fitness = fitness(ind.eval, p.lambdaCap, p.lambdaT);
+    }
+    return poblacion;
+}
+
 void imprimirSolucion(const Instancia& inst, const Solucion& sol) {
 
     cout << " ---------------------- solución obtenida ---------------------- " << endl;

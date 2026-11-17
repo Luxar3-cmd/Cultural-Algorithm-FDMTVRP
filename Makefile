@@ -1,11 +1,14 @@
 CXX      := g++
-CXXFLAGS := -std=c++17 -Wall -Wextra -O2 -MMD -MP
+CXXFLAGS := -std=c++17 -Wall -Wextra -O2 -MMD -MP -Iinclude
 
+# Headers en include/, implementaciones en src/, main.cpp en la raíz.
 TARGET := main
 BUILD  := build
-SRCS   := $(wildcard *.cpp)
-OBJS   := $(SRCS:%.cpp=$(BUILD)/%.o)
+SRCS   := main.cpp $(wildcard src/*.cpp)
+OBJS   := $(patsubst %.cpp,$(BUILD)/%.o,$(notdir $(SRCS)))
 DEPS   := $(OBJS:.o=.d)
+
+vpath %.cpp src
 
 $(TARGET): $(OBJS)
 	$(CXX) $(CXXFLAGS) $^ -o $@
