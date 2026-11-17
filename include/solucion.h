@@ -41,6 +41,10 @@ struct Parametros {
     int nGeneraciones; // Cuantas generaciones habrán
     unsigned semilla; // It is what it is.
     double PorcentajeMejor; // Fracción de la población que alimenta el espacio de creencias normativo.
+    double probMutDeposito, probMutClientes, probMutIntercambio; // Probabilidades de mutacion
+    double pisoMutDeposito; // Mínimo de piso sobre la informacion heuristica de qué depósitos elegir.
+    int genSesgoMutDeposito; // Umbral que indica, para el MutDepósito, desde qué generacion empezar a sesgar los depósitos usando el belief space.
+    double probCruzamiento; // Probabilidad de cruzamiento
 };
 
 // Una solución tiene una route por vehículo; el índice es el vehículo.
@@ -82,6 +86,13 @@ Solucion inicializarSolucion(const Instancia& inst, const Parametros& p, std::mt
  * de modo que sol, eval y fitness quedan coherentes. No ordena la población.
  */
 std::vector<Individuo> inicializarPoblacion(const Instancia& inst, const Parametros& p, std::mt19937& rng);
+
+/**
+ * Si el último trip de la route del vehículo k vuelve a un depósito donde el vehículo no puede
+ * terminar, lo cambia por el depósito permitido más cercano a su último cliente.
+ * Lo usan el cruce y las mutaciones que pueden cambiar cuál es el último trip.
+ */
+void corregirCierre(const Instancia& inst, int k, Route& route);
 
 // Imprime cada route con IDs de la instancia (inicio, clientes, depósito de retorno de cada trip)
 // y la evaluación: tiempo, excesos y factibilidad.

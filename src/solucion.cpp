@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <iostream>
 #include <random>
-#include <algorithm>
+
 
 using namespace std;
 
@@ -148,6 +148,22 @@ vector<Individuo> inicializarPoblacion(const Instancia& inst, const Parametros& 
         ind.fitness = fitness(ind.eval, p.lambdaCap, p.lambdaT);
     }
     return poblacion;
+}
+
+void corregirCierre(const Instancia& inst, int k, Route& route) {
+    if (route.trips.empty()) return;
+    const Vehiculo& veh = inst.vehiculos[k];
+    Trip& ultimo = route.trips.back();
+    if (veh.puedeRecargar[ultimo.retorno] && veh.puedeTerminar[ultimo.retorno]) return;
+
+    int desde = ultimo.clientes.back();
+    int mejor = -1;
+    for (int d : inst.depots) {
+        if (!veh.puedeRecargar[d] || !veh.puedeTerminar[d]) continue;
+        if (mejor == -1 || inst.time[desde][d] < inst.time[desde][mejor]) mejor = d;
+    }
+    if (mejor == -1) {cerr << "Vehiculo " << k + 1 << ": sin depósito de cierre" << endl; exit(1);}
+    ultimo.retorno = mejor;
 }
 
 void imprimirSolucion(const Instancia& inst, const Solucion& sol) {

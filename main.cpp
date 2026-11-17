@@ -5,6 +5,8 @@
 
 #include "instancia.h"
 #include "solucion.h"
+#include "cruzamiento.h"
+#include "mutacion.h"
 
 using namespace std;
 
@@ -24,10 +26,15 @@ int main(int argc, char* argv[]) {
     Parametros p;
     p.lambdaCap = 1;
     p.lambdaT = 1;
-    p.maxTrips = 3;
-    p.poblacion = 1000;
-    p.rcl = 0.6;
+    p.maxTrips = 3; // Maxima cantidad de trips por route.
+    p.poblacion = 100; // Tamaño de la poblacion
+    p.rcl = 0.6; // Restricted candidate list
     p.PorcentajeMejor = 0.2;
+    p.nGeneraciones = 100;
+    p.probMutDeposito = 0.2; // Probabilidad de aplica mutacion sobre los depósitos (belief space enchanced)
+    p.probMutClientes = 0.2; // Probabilidad de aplicar mutacion sobre los clientes de los trips de un individuo
+    p.probMutIntercambio = 0.2; // Probabilidad de aplicar mutacion haciendo switch entre trips de una ruta.
+    p.probCruzamiento = 0.6; // Prubabilidad de cruzamiento entre 2 padres (belief space enchanced)
 
     // ---------------------------------------------------------
     // 3. Semilla y generador aleatorio
