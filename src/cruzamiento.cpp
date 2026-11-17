@@ -1,15 +1,9 @@
 #include "cruzamiento.h"
 
 #include <algorithm>
-#include <iostream>
 #include <random>
 
 using namespace std;
-
-Individuo iniciarCruzamiento(const Individuo& Padre1, const Individuo& Padre2) {
-    cout << "Implementacion" << endl;
-
-}
 
 Individuo cruzarTrips(const Solucion& Padre1, const Solucion& Padre2, const Instancia& inst, const Parametros& p, mt19937& rng) {
     Solucion hijo = Padre2; // El hijo parte como una copia del padre 2

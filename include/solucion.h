@@ -33,18 +33,41 @@ struct Route {
     std::vector<Trip> trips;
 };
 
+/**
+ * Parámetros del algoritmo, agrupados por el componente que los usa.
+ * Convención de nombres: prob* son probabilidades; el prefijo cierres* pertenece a la tabla de
+ * cierres (espacio de creencias normativo) y mejores* al archivo de mejores (circunstancial).
+ */
 struct Parametros {
-    double rcl; // Restricted candidate list factor
-    int maxTrips; // Cantidad máxima de trips
-    double lambdaCap, lambdaT; // Pesos que castigan Capacidad y Tiempo excedido
-    int poblacion; // Tamaño de la población
-    int nGeneraciones; // Cuantas generaciones habrán
-    unsigned semilla; // It is what it is.
-    double PorcentajeMejor; // Fracción de la población que alimenta el espacio de creencias normativo.
-    double probMutDeposito, probMutClientes, probMutIntercambio; // Probabilidades de mutacion
-    double pisoMutDeposito; // Mínimo de piso sobre la informacion heuristica de qué depósitos elegir.
-    int genSesgoMutDeposito; // Umbral que indica, para el MutDepósito, desde qué generacion empezar a sesgar los depósitos usando el belief space.
-    double probCruzamiento; // Probabilidad de cruzamiento
+    // --- Ejecución ---
+    unsigned semilla;          // Semilla del generador aleatorio.
+    int poblacion;             // Tamaño de la población.
+    int nGeneraciones;         // Cantidad de generaciones (criterio de término).
+
+    // --- Restricciones y evaluación ---
+    int maxTrips;              // Máximo de trips por route; 0 = sin límite.
+    double lambdaCap, lambdaT; // Pesos que castigan el exceso de carga y el exceso de tiempo.
+
+    // --- Inicialización ---
+    double rcl;                // Fracción de candidatos más cercanos entre los que sortea el greedy.
+
+    // --- Cruce ---
+    double probCruzamiento;    // Probabilidad de que el hijo nazca de cruzarTrips (si no, copia del padre 1).
+
+    // --- Mutaciones ---
+    double probMutDeposito;    // mutarDeposito: probabilidad de mutar cada depósito.
+    double probMutClientes;    // mutarClientes: probabilidad de mutar cada vehículo.
+    double probMutIntercambio; // intercambiarTrips: probabilidad de mutar cada vehículo.
+
+    // --- Espacio de creencias normativo: tabla de cierres ---
+    double cierresFraccion;    // Fracción mejor de la población que alimenta la tabla en cada generación.
+    double cierresOlvido;      // Factor (entre 0 y 1) por el que se multiplica la tabla antes de sumar.
+    double cierresPiso;        // Peso mínimo de cada depósito candidato al sortear un retorno.
+    int cierresGenSesgo;       // Generación desde la que mutarDeposito sortea con la tabla; antes, uniforme.
+
+    // --- Espacio de creencias circunstancial: archivo de mejores ---
+    double mejoresFraccion;    // Fracción mejor de la población que postula al archivo en cada generación.
+    int mejoresTam;            // Tamaño máximo del archivo.
 };
 
 // Una solución tiene una route por vehículo; el índice es el vehículo.

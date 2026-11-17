@@ -8,10 +8,10 @@
 
 using namespace std;
 
-Individuo mutarDeposito(const Instancia& inst, const Parametros& p, Individuo ind, const vector<vector<double>>& tablaCierres, int generacion, int generacionSesgo, double probMutar, double piso, mt19937& rng) {
+Individuo mutarDeposito(const Instancia& inst, const Parametros& p, Individuo ind, const vector<vector<double>>& tablaCierres, int generacion, mt19937& rng) {
     Solucion& sol = ind.sol;
-    bernoulli_distribution moneda(probMutar);
-    bool sesgar = generacion >= generacionSesgo; // Antes de esa generacion el sorteo sobre los depósitos es uniforme
+    bernoulli_distribution moneda(p.probMutDeposito);
+    bool sesgar = generacion >= p.cierresGenSesgo; // Antes de esa generacion el sorteo sobre los depósitos es uniforme
 
     for ( int k = 0; k < inst.numVehicles; k++) { // POR CADA VEHICULO (ROUTE) VEREMOS LOS DEPÓSITO UNO A UNO. (INICIO Y RETORNOS)
         Route& route = sol[k];
@@ -45,7 +45,7 @@ Individuo mutarDeposito(const Instancia& inst, const Parametros& p, Individuo in
                 if (!veh.puedeRecargar[d]) continue; // Evita agregar a los depósitos del cual el vehiculo no tiene permiso para recargar.
                 if (ultimo && !veh.puedeTerminar[d]) continue; // Eviata agregar a la lista de candidatos depósitos que no tienen el permiso para terminar el trip, en el caso de que sea el último trip.
                 candidatos.push_back(d);
-                pesos.push_back(sesgar ? tablaCierres[ultimoCliente][d] + piso : 1.0); // En el caso de que ya este permitido aplicar el espacio de creencias normativo, se guarda en el vector de pesos ese valor.
+                pesos.push_back(sesgar ? tablaCierres[ultimoCliente][d] + p.cierresPiso : 1.0); // En el caso de que ya este permitido aplicar el espacio de creencias normativo, se guarda en el vector de pesos ese valor.
             }
             if (candidatos.empty()) continue; // No hay depósito factible para aplicar mutacion en el trip seleccionado
 
@@ -58,8 +58,8 @@ Individuo mutarDeposito(const Instancia& inst, const Parametros& p, Individuo in
     return ind;
 }
 
-Individuo mutarClientes (const Instancia& inst, const Parametros& p, Individuo ind, double probMutar, mt19937& rng) {
-    bernoulli_distribution moneda(probMutar); // Se tira una moneda cargada con la probabilidad de mutacion configurada.
+Individuo mutarClientes (const Instancia& inst, const Parametros& p, Individuo ind, mt19937& rng) {
+    bernoulli_distribution moneda(p.probMutClientes); // Se tira una moneda cargada con la probabilidad de mutacion configurada.
 
     for (int k = 0; k < inst.numVehicles; k++) {
         vector<Trip>& trips = ind.sol[k].trips; // Por cada vehículo accedemos a sus trips.
@@ -87,8 +87,8 @@ Individuo mutarClientes (const Instancia& inst, const Parametros& p, Individuo i
     return ind;
 }
 
-Individuo intercambiarTrips( const Instancia& inst, const Parametros& p, Individuo ind, double probMutar, mt19937& rng) {
-    bernoulli_distribution moneda(probMutar); // Una moneda cargada por vehiculo
+Individuo intercambiarTrips( const Instancia& inst, const Parametros& p, Individuo ind, mt19937& rng) {
+    bernoulli_distribution moneda(p.probMutIntercambio); // Una moneda cargada por vehiculo
 
     for (int k = 0; k < inst.numVehicles; k++) {
         vector<Trip>& trips = ind.sol[k].trips;

@@ -27,6 +27,62 @@ Contra quién te comparas en el paper puede ser contra el estado del arte (A), m
 
 # Implementación de algoritmo cultural
 
+## Compilación y ejecución
+
+Requiere Linux, `g++` con C++17 y `make`.
+
+```
+make                               # compila y deja el ejecutable ./main
+./main <ruta a la instancia .dat>  # ejecuta el algoritmo sobre esa instancia
+make clean                         # borra el ejecutable y la carpeta build/
+```
+
+Ejemplo, con las instancias descomprimidas en `Instancias/`:
+
+```
+./main Instancias/2-InstanciasB_redefinidas/b-Instancia11_veh2_cap2_rel1.dat
+./main Instancias/5-InstanciasE_redefinidas/e-Instancia41_veh3_cap15_rel1.dat
+```
+
+`make run <ruta a la instancia>` compila si hace falta y ejecuta en un solo paso.
+
+La salida muestra el resumen de la instancia, la semilla usada y el mejor fitness de cada generación. La instancia es el único argumento de la línea de comandos por ahora.
+
+### Parámetros
+
+Se asignan en la sección 2 de `main.cpp`; tras cambiarlos hay que volver a compilar con `make`. La semilla se sortea en cada ejecución y se imprime.
+
+| Parámetro | Valor | Significado |
+|---|---|---|
+| `poblacion` | 100 | Tamaño de la población. |
+| `nGeneraciones` | 100 | Cantidad de generaciones; es el criterio de término. |
+| `maxTrips` | 3 | Máximo de trips por route; `0` = sin límite. |
+| `lambdaCap`, `lambdaT` | 1, 1 | Castigo por exceso de carga y por exceso de tiempo. |
+| `rcl` | 0.6 | Fracción de candidatos más cercanos entre los que sortea la inicialización. |
+| `probCruzamiento` | 0.6 | Probabilidad de que el hijo nazca del cruce; si no, es copia del padre 1. |
+| `probMutDeposito` | 0.2 | Probabilidad de mutar cada depósito. |
+| `probMutClientes` | 0.2 | Probabilidad, por vehículo, de barajar clientes dentro de sus trips. |
+| `probMutIntercambio` | 0.2 | Probabilidad, por vehículo, de intercambiar dos de sus trips. |
+| `cierresFraccion` | 0.2 | Fracción mejor de la población que alimenta la tabla de cierres. |
+| `cierresOlvido` | 0.7 | Factor por el que se multiplica la tabla en cada generación. |
+| `cierresPiso` | 0.1 | Peso mínimo de cada depósito candidato al sortear un retorno. |
+| `cierresGenSesgo` | 20 | Generación desde la que los retornos se sortean con la tabla. |
+| `mejoresFraccion` | 0.2 | Fracción mejor de la población que postula al archivo de mejores. |
+| `mejoresTam` | 50 | Tamaño máximo del archivo de mejores. |
+
+### Estructura del código
+
+| Archivos | Contenido |
+|---|---|
+| `main.cpp` | Parámetros, población inicial, espacio de creencias y bucle de generaciones. |
+| `instancia` | Lectura del `.dat` y permisos de depósito por vehículo. |
+| `solucion` | Representación, evaluación, inicialización y corrección del depósito de cierre. |
+| `cruzamiento` | `cruzarTrips`. |
+| `mutacion` | `mutarDeposito`, `mutarClientes`, `intercambiarTrips`. |
+| `creencias` | Actualización de la tabla de cierres y del archivo de mejores. |
+
+Los headers están en `include/` y las implementaciones en `src/`.
+
 ## Convenciones de jerga
 
 Se adopta la convención del paper FDMTVRP:
