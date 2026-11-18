@@ -25,6 +25,8 @@ ifeq (run,$(firstword $(MAKECMDGOALS)))
   RUN_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
   $(eval $(RUN_ARGS):;@:)
   .PHONY: $(RUN_ARGS)
+  # Modo silencioso: sin esto make avisa "Nothing to be done" por cada argumento repetido.
+  MAKEFLAGS += -s
 endif
 
 run: $(TARGET)

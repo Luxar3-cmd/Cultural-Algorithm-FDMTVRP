@@ -42,7 +42,8 @@ struct Parametros {
     // --- Ejecución ---
     unsigned semilla;          // Semilla del generador aleatorio.
     int poblacion;             // Tamaño de la población.
-    int nGeneraciones;         // Cantidad de generaciones (criterio de término).
+    int nGeneraciones;         // Máximo de generaciones (criterio de término).
+    int genSinMejora;          // Corta si el mejor fitness no baja en esta cantidad de generaciones seguidas; 0 = no corta.
 
     // --- Restricciones y evaluación ---
     int maxTrips;              // Máximo de trips por route; 0 = sin límite.
@@ -68,6 +69,7 @@ struct Parametros {
     // --- Espacio de creencias circunstancial: archivo de mejores ---
     double mejoresFraccion;    // Fracción mejor de la población que postula al archivo en cada generación.
     int mejoresTam;            // Tamaño máximo del archivo.
+    double mejoresProb;        // Probabilidad de que el padre 2 salga del archivo y no de la población.
 };
 
 // Una solución tiene una route por vehículo; el índice es el vehículo.

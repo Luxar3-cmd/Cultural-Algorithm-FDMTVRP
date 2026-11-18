@@ -1,73 +1,64 @@
 #include <algorithm>
+#include <chrono>
 #include <iostream>
 #include <random>
+#include <string>
 #include <vector>
 
 #include "instancia.h"
 #include "solucion.h"
+#include "parametros.h"
 #include "cruzamiento.h"
 #include "mutacion.h"
 #include "creencias.h"
 
 using namespace std;
 
+/**
+ * Guarda en mejorFactible al mejor individuo factible visto en toda la ejecución.
+ * Recibe la población ordenada por fitness: en un individuo factible el fitness es solo su
+ * tiempo, así que el primer factible que aparece es el mejor factible de esa generación.
+ */
+void registrarMejorFactible(const vector<Individuo>& poblacion, Individuo& mejorFactible, bool& hayFactible) {
+    auto it = find_if(poblacion.begin(), poblacion.end(),
+                      [](const Individuo& ind) { return ind.eval.factible(); });
+    if (it == poblacion.end()) return; // Ningún factible en esta generación.
+    if (!hayFactible || it->fitness < mejorFactible.fitness) {
+        mejorFactible = *it;
+        hayFactible = true;
+    }
+}
+
 int main(int argc, char* argv[]) {
 
     // ---------------------------------------------------------
-    // 1. Lectura de la instancia
+    // 1. Línea de comandos
+    //    argv[1] es la instancia; el resto son parámetros de la forma --nombre valor.
     // ---------------------------------------------------------
-    if (argc < 2) { cerr << "Uso: " << argv[0] << " <archivo.dat>" << endl; return 1; }
+    if (argc < 2 || string(argv[1]) == "--help") {
+        imprimirUso(argv[0]);
+        return argc < 2 ? 1 : 0;
+    }
+
+    // ---------------------------------------------------------
+    // 2. Parámetros del algoritmo e instancia
+    //    Los parámetros se leen primero: si alguno está mal, se avisa antes de cargar la instancia.
+    //    Los valores por defecto y la validación están en src/parametros.cpp.
+    // ---------------------------------------------------------
+    Parametros p = leerParametros(argc, argv);
+
     Instancia inst;
     inicializarInstancia(inst, argv[1]);
     imprimirResumen(inst);
-
-    // ---------------------------------------------------------
-    // 2. Parámetros del algoritmo
-    //    Agrupados por el componente que los usa, en el mismo orden que el struct Parametros.
-    // ---------------------------------------------------------
-    Parametros p;
-
-    // Ejecución
-    p.poblacion = 100;          // Tamaño de la población.
-    p.nGeneraciones = 100;      // Cantidad de generaciones (criterio de término).
-
-    // Restricciones y evaluación
-    p.maxTrips = 3;             // Máximo de trips por route; 0 = sin límite.
-    p.lambdaCap = 1;            // Castigo por unidad de carga sobre la capacidad.
-    p.lambdaT = 1;              // Castigo por unidad de tiempo sobre tmax.
-
-    // Inicialización
-    p.rcl = 0.6;                // Fracción de candidatos más cercanos entre los que sortea el greedy.
-
-    // Cruce
-    p.probCruzamiento = 0.6;    // Probabilidad de que el hijo nazca de cruzarTrips.
-
-    // Mutaciones
-    p.probMutDeposito = 0.2;    // mutarDeposito: probabilidad de mutar cada depósito.
-    p.probMutClientes = 0.2;    // mutarClientes: probabilidad de mutar cada vehículo.
-    p.probMutIntercambio = 0.2; // intercambiarTrips: probabilidad de mutar cada vehículo.
-
-    // Espacio de creencias normativo: tabla de cierres
-    p.cierresFraccion = 0.2;    // Fracción mejor de la población que alimenta la tabla.
-    p.cierresOlvido = 0.7;      // Factor por el que se multiplica la tabla en cada generación.
-    p.cierresPiso = 0.1;        // Peso mínimo de cada depósito candidato al sortear un retorno.
-    p.cierresGenSesgo = 20;     // Generación desde la que mutarDeposito sortea con la tabla.
-
-    // Espacio de creencias circunstancial: archivo de mejores
-    p.mejoresFraccion = 0.2;    // Fracción mejor de la población que postula al archivo.
-    p.mejoresTam = 50;          // Tamaño máximo del archivo.
+    imprimirParametros(p);
 
     // ---------------------------------------------------------
     // 3. Semilla y generador aleatorio
-    //    Un solo generador para toda la ejecución; se imprime la semilla para poder repetirla.
+    //    Un solo generador para toda la ejecución. La semilla viene de --semilla o fue sorteada
+    //    al leer los parámetros; con la misma semilla la ejecución se repite idéntica.
     // ---------------------------------------------------------
-    random_device rd;
-    p.semilla = rd();
     mt19937 rng(p.semilla);
-
-    cout << "---------------" << endl;
-    cout << "Semilla inicializada: " << p.semilla << endl;
-    cout << "---------------" << endl;
+    auto inicioReloj = chrono::steady_clock::now(); // Para informar cuánto tardó el algoritmo.
 
     // ---------------------------------------------------------
     // 4. Población inicial
@@ -102,21 +93,34 @@ int main(int argc, char* argv[]) {
     // 7. Bucle de generaciones
     //    En cada generación todo individuo tiene un turno como padre 1: busca pareja, nace un
     //    hijo, el hijo muta y, si mejora al padre 1, ocupa su lugar en la generación siguiente.
+    //    Termina al llegar a p.nGeneraciones o tras p.genSinMejora generaciones sin mejorar.
     // ---------------------------------------------------------
     bernoulli_distribution monedaCruce(p.probCruzamiento);
+    bernoulli_distribution monedaMejores(p.mejoresProb); // Usado para ver si un padre será el utilizado del espacio de creencias para realizar el cruce.
     uniform_int_distribution<int> distPareja(0, p.poblacion - 2); // Posición del padre 2 entre los demás individuos.
+
+    double mejorFitness = Poblacion[0].fitness; // Mejor fitness visto hasta ahora.
+    int generacionesSinMejora = 0;              // Generaciones seguidas en que no bajó.
+    int generacionesEjecutadas = 0;
+
+    // Mejor individuo factible de toda la ejecución: es lo que se entrega al final.
+    Individuo mejorFactible;
+    bool hayFactible = false;
+    registrarMejorFactible(Poblacion, mejorFactible, hayFactible);
 
     for (int gen = 0; gen < p.nGeneraciones; gen++) {
         // Los hijos se guardan aparte: todos los padres de una generación salen de la misma población.
         vector<Individuo> nextGen = Poblacion;
+        uniform_int_distribution<int> distMejores(0, Mejores.size() - 1); // Posición dentro del archivo, que cambia de tamaño.
 
         for (int i = 0; i < p.poblacion; i++) {
             const Individuo& Padre1 = Poblacion[i];
 
-            // Padre 2: otro individuo de la población al azar, distinto del padre 1.
+            // Padre 2. Influencia del espacio circunstancial: con probabilidad p.mejoresProb sale
+            // del archivo Mejores, al azar. Si no, es otro individuo de la población, distinto del padre 1.
             int j = distPareja(rng);
             if (j >= i) j++;
-            const Individuo& Padre2 = Poblacion[j];
+            const Individuo& Padre2 = monedaMejores(rng) ? Mejores[distMejores(rng)] : Poblacion[j]; 
 
             // Cruce: si la moneda no sale, el hijo parte como copia del padre 1.
             Individuo hijo = Padre1;
@@ -139,9 +143,46 @@ int main(int argc, char* argv[]) {
         // Aceptación: los mejores de la generación actualizan el espacio de creencias.
         actualizarTablaCierres(TablaCierres, Poblacion, p);
         actualizarMejores(Mejores, Poblacion, p);
+        registrarMejorFactible(Poblacion, mejorFactible, hayFactible);
+        generacionesEjecutadas++;
 
         cout << "Generacion " << gen << ": mejor fitness " << Poblacion[0].fitness << endl;
+
+        // Criterio de término por estancamiento.
+        if (Poblacion[0].fitness < mejorFitness) {
+            mejorFitness = Poblacion[0].fitness;
+            generacionesSinMejora = 0;
+        } else {
+            generacionesSinMejora++;
+        }
+        if (p.genSinMejora > 0 && generacionesSinMejora >= p.genSinMejora) {
+            cout << "Termino: " << p.genSinMejora << " generaciones sin mejora." << endl;
+            break;
+        }
     }
+
+    // ---------------------------------------------------------
+    // 8. Resultado
+    //    Se entrega la mejor solución factible vista. Si no hubo ninguna, la de menor fitness,
+    //    avisando que no cumple capacidad o tiempo máximo.
+    // ---------------------------------------------------------
+    double segundos = chrono::duration<double>(chrono::steady_clock::now() - inicioReloj).count();
+    const Individuo& entregado = hayFactible ? mejorFactible : Poblacion[0];
+
+    cout << " --------------- Resultado ---------------" << endl;
+    if (hayFactible) cout << "Mejor solucion factible encontrada:" << endl;
+    else             cout << "No se encontro una solucion factible. Se entrega la de menor fitness:" << endl;
+    imprimirSolucion(inst, entregado.sol);
+
+    // Una sola línea con todo el resultado, pensada para leerla desde un script.
+    cout << "RESULTADO factible=" << (hayFactible ? "si" : "no")
+         << " tiempo=" << entregado.eval.tiempo
+         << " excesoCarga=" << entregado.eval.excesoCarga
+         << " excesoTiempo=" << entregado.eval.excesoTiempo
+         << " fitness=" << entregado.fitness
+         << " generaciones=" << generacionesEjecutadas
+         << " segundos=" << segundos
+         << " semilla=" << p.semilla << endl;
 
     return 0;
 }

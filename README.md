@@ -32,49 +32,98 @@ Contra quién te comparas en el paper puede ser contra el estado del arte (A), m
 Requiere Linux, `g++` con C++17 y `make`.
 
 ```
-make                               # compila y deja el ejecutable ./main
-./main <ruta a la instancia .dat>  # ejecuta el algoritmo sobre esa instancia
-make clean                         # borra el ejecutable y la carpeta build/
+make          # compila y deja el ejecutable ./main
+make clean    # borra el ejecutable y la carpeta build/
 ```
 
-Ejemplo, con las instancias descomprimidas en `Instancias/`:
+El programa recibe la instancia como primer argumento y, después, los parámetros que se quieran cambiar:
+
+```
+./main <instancia.dat> [--nombre valor] ...
+```
+
+Ejemplos, con las instancias descomprimidas en `Instancias/`:
 
 ```
 ./main Instancias/2-InstanciasB_redefinidas/b-Instancia11_veh2_cap2_rel1.dat
-./main Instancias/5-InstanciasE_redefinidas/e-Instancia41_veh3_cap15_rel1.dat
+./main Instancias/2-InstanciasB_redefinidas/b-Instancia11_veh2_cap2_rel1.dat --semilla 7 --poblacion 200
+./main Instancias/5-InstanciasE_redefinidas/e-Instancia41_veh3_cap15_rel1.dat --lambdaT 100 --nGeneraciones 500
 ```
 
-`make run <ruta a la instancia>` compila si hace falta y ejecuta en un solo paso.
+`./main --help` muestra todas las opciones.
 
-La salida muestra el resumen de la instancia, la semilla usada y el mejor fitness de cada generación. La instancia es el único argumento de la línea de comandos por ahora.
+`make run <instancia.dat>` compila si hace falta y ejecuta en un solo paso. Para pasar parámetros por esa vía hay que anteponer `--`, o `make` los toma como opciones propias. Con todos los parámetros especificados (aquí con sus valores por defecto):
+
+```
+make run Instancias/2-InstanciasB_redefinidas/b-Instancia11_veh2_cap2_rel1.dat -- \
+    --semilla 7 \
+    --poblacion 100 \
+    --nGeneraciones 100 \
+    --genSinMejora 250 \
+    --maxTrips 3 \
+    --lambdaCap 1 \
+    --lambdaT 1 \
+    --rcl 0.6 \
+    --probCruzamiento 0.6 \
+    --probMutDeposito 0.2 \
+    --probMutClientes 0.2 \
+    --probMutIntercambio 0.2 \
+    --cierresFraccion 0.2 \
+    --cierresOlvido 0.7 \
+    --cierresPiso 0.1 \
+    --cierresGenSesgo 20 \
+    --mejoresFraccion 0.2 \
+    --mejoresTam 50 \
+    --mejoresProb 0.2
+```
+
+El mismo comando sirve con `./main` en lugar de `make run`, quitando el `--` suelto.
 
 ### Parámetros
 
-Se asignan en la sección 2 de `main.cpp`; tras cambiarlos hay que volver a compilar con `make`. La semilla se sortea en cada ejecución y se imprime.
+Todos son opcionales: el que no se entrega toma su valor por defecto. Un nombre desconocido, un valor que falta o un valor fuera de rango detienen el programa con un mensaje.
 
-| Parámetro | Valor | Significado |
+| Opción | Por defecto | Significado |
 |---|---|---|
-| `poblacion` | 100 | Tamaño de la población. |
-| `nGeneraciones` | 100 | Cantidad de generaciones; es el criterio de término. |
-| `maxTrips` | 3 | Máximo de trips por route; `0` = sin límite. |
-| `lambdaCap`, `lambdaT` | 1, 1 | Castigo por exceso de carga y por exceso de tiempo. |
-| `rcl` | 0.6 | Fracción de candidatos más cercanos entre los que sortea la inicialización. |
-| `probCruzamiento` | 0.6 | Probabilidad de que el hijo nazca del cruce; si no, es copia del padre 1. |
-| `probMutDeposito` | 0.2 | Probabilidad de mutar cada depósito. |
-| `probMutClientes` | 0.2 | Probabilidad, por vehículo, de barajar clientes dentro de sus trips. |
-| `probMutIntercambio` | 0.2 | Probabilidad, por vehículo, de intercambiar dos de sus trips. |
-| `cierresFraccion` | 0.2 | Fracción mejor de la población que alimenta la tabla de cierres. |
-| `cierresOlvido` | 0.7 | Factor por el que se multiplica la tabla en cada generación. |
-| `cierresPiso` | 0.1 | Peso mínimo de cada depósito candidato al sortear un retorno. |
-| `cierresGenSesgo` | 20 | Generación desde la que los retornos se sortean con la tabla. |
-| `mejoresFraccion` | 0.2 | Fracción mejor de la población que postula al archivo de mejores. |
-| `mejoresTam` | 50 | Tamaño máximo del archivo de mejores. |
+| `--semilla` | sorteada | Semilla del generador aleatorio. Con la misma semilla la ejecución se repite idéntica. |
+| `--poblacion` | 500 | Tamaño de la población. |
+| `--nGeneraciones` | 10000 | Criterio de término: máximo de generaciones. |
+| `--genSinMejora` | 250 | Criterio de término: generaciones seguidas sin que baje el mejor fitness; `0` = no corta. |
+| `--maxTrips` | 3 | Máximo de trips por route; `0` = sin límite. |
+| `--lambdaCap` | 1 | Castigo por unidad de exceso de carga. |
+| `--lambdaT` | 1 | Castigo por unidad de exceso de tiempo. |
+| `--rcl` | 0.6 | Fracción de candidatos más cercanos entre los que sortea la inicialización. |
+| `--probCruzamiento` | 0.6 | Probabilidad de que el hijo nazca del cruce; si no, es copia del padre 1. |
+| `--probMutDeposito` | 0.2 | Probabilidad de mutar cada depósito. |
+| `--probMutClientes` | 0.2 | Probabilidad, por vehículo, de barajar clientes dentro de sus trips. |
+| `--probMutIntercambio` | 0.2 | Probabilidad, por vehículo, de intercambiar dos de sus trips. |
+| `--cierresFraccion` | 0.2 | Fracción mejor de la población que alimenta la tabla de cierres. |
+| `--cierresOlvido` | 0.7 | Factor por el que se multiplica la tabla en cada generación. |
+| `--cierresPiso` | 0.1 | Peso mínimo de cada depósito candidato al sortear un retorno. |
+| `--cierresGenSesgo` | 20 | Generación desde la que los retornos se sortean con la tabla. |
+| `--mejoresFraccion` | 0.2 | Fracción mejor de la población que postula al archivo de mejores. |
+| `--mejoresTam` | 50 | Tamaño máximo del archivo de mejores. |
+| `--mejoresProb` | 0.2 | Probabilidad de que el segundo padre salga del archivo de mejores y no de la población. |
+
+El algoritmo termina con lo que ocurra primero entre `--nGeneraciones` y `--genSinMejora`.
+
+### Salida
+
+1. Resumen de la instancia y parámetros usados, incluida la semilla.
+2. Una línea por generación con el mejor fitness.
+3. La mejor solución factible encontrada: la route de cada vehículo con los identificadores de la instancia y los depósitos entre corchetes. Si no hubo ninguna factible, se entrega la de menor fitness y se avisa.
+4. Una línea que empieza con `RESULTADO` y resume la ejecución para leerla desde un script:
+
+```
+RESULTADO factible=si tiempo=7382 excesoCarga=0 excesoTiempo=0 fitness=7382 generaciones=100 segundos=0.019 semilla=7
+```
 
 ### Estructura del código
 
 | Archivos | Contenido |
 |---|---|
-| `main.cpp` | Parámetros, población inicial, espacio de creencias y bucle de generaciones. |
+| `main.cpp` | Población inicial, espacio de creencias, bucle de generaciones y entrega del resultado. |
+| `parametros` | Lectura de los parámetros de la línea de comandos; valores por defecto. |
 | `instancia` | Lectura del `.dat` y permisos de depósito por vehículo. |
 | `solucion` | Representación, evaluación, inicialización y corrección del depósito de cierre. |
 | `cruzamiento` | `cruzarTrips`. |

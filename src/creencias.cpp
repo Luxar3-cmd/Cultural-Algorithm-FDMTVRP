@@ -25,7 +25,7 @@ void actualizarMejores(vector<Individuo>& mejores, const vector<Individuo>& pobl
     int cantidadCandidatos = (int)(poblacion.size() * p.mejoresFraccion);
     mejores.insert(mejores.end(), poblacion.begin(), poblacion.begin() + cantidadCandidatos);
 
-    // Se orden por fitness.
+    // Se ordena por fitness.
     sort(mejores.begin(), mejores.end(),
         [](const Individuo& a, const Individuo& b){ return a.fitness <  b.fitness;});
 
