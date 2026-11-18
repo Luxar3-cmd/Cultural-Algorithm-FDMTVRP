@@ -1,0 +1,8 @@
+parameterFile = "./parameters.txt"
+trainInstancesDir = ""
+trainInstancesFile = "./instances-E.txt"
+targetRunner = "./target-runner"
+logFile = "./irace-E.Rdata"
+maxExperiments = 1800
+parallel = 8
+seed = 20261118

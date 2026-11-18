@@ -37,7 +37,12 @@ INSTANCE=$4
 shift 4 || error "Not enough parameters"
 CONFIG_PARAMS=$*
 # End of parsing
-EXE_PARAMS="${INSTANCE} --semilla ${SEED} --nGeneraciones 10000 --genSinMejora 1000 ${CONFIG_PARAMS}"
+case "$(basename ${INSTANCE})" in
+    b-*) PRESUPUESTO=50000 ;;
+    e-*) PRESUPUESTO=2000000 ;;
+esac
+POBLACION=$(echo "${CONFIG_PARAMS}" | grep -oP -- '--poblacion \K[0-9]+')
+EXE_PARAMS="${INSTANCE} --semilla ${SEED} --nGeneraciones $((PRESUPUESTO / POBLACION - 1)) ${CONFIG_PARAMS}"
 
 if [ ! -x "$(command -v ${EXE})" ]; then
     error "${EXE}: not found or not executable (pwd: $(pwd))"

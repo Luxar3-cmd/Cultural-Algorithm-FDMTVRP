@@ -1,0 +1,417 @@
+#------------------------------------------------------------------------------
+# irace: An implementation in R of (Elitist) Iterated Racing
+# Version: 4.5.1.d5507ea
+# Copyright (C) 2010-2025
+# Manuel Lopez-Ibanez     <manuel.lopez-ibanez@manchester.ac.uk>
+# Jeremie Dubois-Lacoste
+# Leslie Perez Caceres    <leslie.perez.caceres@ulb.ac.be>
+#
+# This is free software, and you are welcome to redistribute it under certain
+# conditions.  See the GNU General Public License for details. There is NO
+# WARRANTY; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+# irace builds upon previous code from the race package:
+#     race: Racing methods for the selection of the best
+#     Copyright (C) 2003 Mauro Birattari
+#------------------------------------------------------------------------------
+# installed at: /home/imorales/R/library/irace
+# called with: --scenario scenario-B.txt
+# 2026-11-18 15:12:13 -03: Reading parameter file '/home/imorales/Desktop/IAA_VRP/proyecto/FDMTVRP-Cultural-approach/sintonizacion/parameters.txt'.
+# 2026-11-18 15:12:13 -03: Initialization
+# Elitist race
+# Elitist new instances: 1
+# Elitist limit: 2
+# nbIterations: 5
+# minNbSurvival: 5
+# nbParameters: 15
+# seed: 20261118
+# confidence level: 0.95
+# budget: 5000
+# mu: 5
+# deterministic: FALSE
+
+# 2026-11-18 15:12:13 -03: Iteration 1 of 5
+# experimentsUsed: 0
+# remainingBudget: 5000
+# currentBudget: 1000
+# nbConfigurations: 166
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . Alive configurations were already evaluated on this instance and nothing is discarded.
+     : All alive configurations are elite, but some need to be evaluated on this instance.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|          1|        166|         18|     12554.00000|        166|00:00:05|   NA|  NA|    NA|
+|x|          2|        166|         18|     10283.00000|        332|00:00:05|+0.57|0.79|0.1839|
+|x|          3|        166|         18|     10042.00000|        498|00:00:04|+0.58|0.72|0.2876|
+|x|          4|        166|        117|     9393.000000|        664|00:00:05|+0.54|0.65|0.2779|
+|-|          5|         60|        117|     8945.400000|        830|00:00:06|-0.10|0.12|1.0808|
+|=|          6|         60|        117|     9545.333333|        890|00:00:02|-0.03|0.14|1.0164|
+|=|          7|         60|        117|     9269.571429|        950|00:00:02|+0.01|0.15|0.9742|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:         117    mean value:      9269.571429
+Description of the best-so-far configuration:
+    .ID. poblacion lambdaCap lambdaT    rcl probCruzamiento probMutDeposito probMutClientes probMutIntercambio cierresFraccion cierresOlvido cierresPiso cierresGenSesgo mejoresFraccion mejoresTam mejoresProb .PARENT.
+117  117       712   30.5681  1.0408 0.9425          0.8138          0.1558          0.9537             0.0473          0.3071        0.0888      0.0152             399          0.2607        150      0.7672       NA
+
+# 2026-11-18 15:12:45 -03: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    poblacion lambdaCap  lambdaT    rcl probCruzamiento probMutDeposito probMutClientes probMutIntercambio cierresFraccion cierresOlvido cierresPiso cierresGenSesgo mejoresFraccion mejoresTam mejoresProb
+117       712   30.5681   1.0408 0.9425          0.8138          0.1558          0.9537             0.0473          0.3071        0.0888      0.0152             399          0.2607        150      0.7672
+91        635    6.0554 255.8495 0.8386          0.7357          0.2027          0.6881             0.4691          0.0891        0.1981      0.2254             172          0.3521        184      0.3765
+26        781    6.3912 175.3566 0.8906          0.4779          0.3824          0.4771             0.6801          0.1770        0.5497      0.1387              27          0.3415        161      0.8062
+166       294    5.0132 861.6450 0.9462          0.4037          0.1050          0.0982             0.0121          0.3756        0.3427      1.8995             326          0.0902        187      0.8258
+121       651   47.0726  50.6827 0.6457          0.3763          0.0933          0.1412             0.3598          0.3914        0.6513      0.0234             493          0.1200         38      0.2047
+# 2026-11-18 15:12:45 -03: Iteration 2 of 5
+# experimentsUsed: 950
+# remainingBudget: 4050
+# currentBudget: 1012
+# nbConfigurations: 130
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . Alive configurations were already evaluated on this instance and nothing is discarded.
+     : All alive configurations are elite, but some need to be evaluated on this instance.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|          8|        130|        117|     9000.000000|        130|00:00:03|   NA|  NA|    NA|
+|x|          3|        130|        117|     9280.000000|        255|00:00:03|+0.46|0.73|0.3444|
+|x|          1|        130|        117|     10371.33333|        380|00:00:04|+0.39|0.59|0.4065|
+|x|          2|        130|        117|     9781.500000|        505|00:00:04|+0.35|0.51|0.4331|
+|-|          6|         78|        174|     10318.80000|        630|00:00:04|-0.06|0.15|1.0499|
+|=|          5|         78|        174|     9791.500000|        703|00:00:02|+0.01|0.18|0.9937|
+|=|          7|         78|        174|     9480.571429|        776|00:00:02|+0.02|0.16|0.9824|
+|=|          4|         78|        174|     9226.250000|        849|00:00:02|+0.02|0.14|0.9816|
+|=|          9|         78|        174|     9073.666667|        927|00:00:02|+0.03|0.14|0.9719|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:         174    mean value:      9073.666667
+Description of the best-so-far configuration:
+    .ID. poblacion lambdaCap lambdaT    rcl probCruzamiento probMutDeposito probMutClientes probMutIntercambio cierresFraccion cierresOlvido cierresPiso cierresGenSesgo mejoresFraccion mejoresTam mejoresProb .PARENT.
+174  174       654  101.8646  3.3328 0.6819          0.6994           0.174          0.8572             0.0734          0.1552        0.6132      0.0111             334           0.254        193      0.5339      117
+
+# 2026-11-18 15:13:16 -03: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    poblacion lambdaCap  lambdaT    rcl probCruzamiento probMutDeposito probMutClientes probMutIntercambio cierresFraccion cierresOlvido cierresPiso cierresGenSesgo mejoresFraccion mejoresTam mejoresProb
+174       654  101.8646   3.3328 0.6819          0.6994          0.1740          0.8572             0.0734          0.1552        0.6132      0.0111             334          0.2540        193      0.5339
+260       954    7.2275  28.2854 0.7815          0.3390          0.2365          0.3929             0.4423          0.3337        0.0817      0.0757             340          0.2646        118      0.8462
+257       564  123.6651  12.0296 0.7985          0.8501          0.1690          0.9192             0.0492          0.2201        0.5941      0.0155             435          0.1870        140      0.7231
+117       712   30.5681   1.0408 0.9425          0.8138          0.1558          0.9537             0.0473          0.3071        0.0888      0.0152             399          0.2607        150      0.7672
+230       709  170.5677 324.9890 0.5181          0.6968          0.3503          0.1106             0.8227          0.2253        0.0028      0.1435             253          0.1411         35      0.2408
+# 2026-11-18 15:13:16 -03: Iteration 3 of 5
+# experimentsUsed: 1877
+# remainingBudget: 3123
+# currentBudget: 1041
+# nbConfigurations: 108
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . Alive configurations were already evaluated on this instance and nothing is discarded.
+     : All alive configurations are elite, but some need to be evaluated on this instance.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|         10|        108|        257|     7388.000000|        108|00:00:03|   NA|  NA|    NA|
+|x|          1|        108|        257|     9971.000000|        211|00:00:03|+0.28|0.64|0.4117|
+|x|          4|        108|        257|     9129.333333|        314|00:00:03|+0.20|0.47|0.3734|
+|x|          9|        108|        257|     8810.250000|        417|00:00:03|+0.25|0.44|0.4119|
+|-|          5|         71|        117|     8479.200000|        520|00:00:03|-0.10|0.12|1.0677|
+|=|          6|         71|        376|     9144.000000|        586|00:00:02|-0.05|0.13|1.0271|
+|=|          7|         71|        376|     8925.571429|        652|00:00:02|-0.02|0.13|0.9692|
+|=|          3|         71|        376|     9004.875000|        718|00:00:02|+0.00|0.13|0.9261|
+|=|          2|         71|        376|     8894.555556|        784|00:00:02|+0.02|0.13|0.9027|
+|-|          8|         48|        376|     8905.100000|        850|00:00:02|-0.04|0.06|0.8057|
+|=|         11|         48|        325|     8751.545455|        898|00:00:02|-0.02|0.07|0.8239|
+|=|         12|         48|        174|     9059.750000|        946|00:00:01|-0.01|0.08|0.8330|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:         174    mean value:      9059.750000
+Description of the best-so-far configuration:
+    .ID. poblacion lambdaCap lambdaT    rcl probCruzamiento probMutDeposito probMutClientes probMutIntercambio cierresFraccion cierresOlvido cierresPiso cierresGenSesgo mejoresFraccion mejoresTam mejoresProb .PARENT.
+174  174       654  101.8646  3.3328 0.6819          0.6994           0.174          0.8572             0.0734          0.1552        0.6132      0.0111             334           0.254        193      0.5339      117
+
+# 2026-11-18 15:13:51 -03: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    poblacion lambdaCap lambdaT    rcl probCruzamiento probMutDeposito probMutClientes probMutIntercambio cierresFraccion cierresOlvido cierresPiso cierresGenSesgo mejoresFraccion mejoresTam mejoresProb
+174       654  101.8646  3.3328 0.6819          0.6994          0.1740          0.8572             0.0734          0.1552        0.6132      0.0111             334          0.2540        193      0.5339
+257       564  123.6651 12.0296 0.7985          0.8501          0.1690          0.9192             0.0492          0.2201        0.5941      0.0155             435          0.1870        140      0.7231
+325       936  154.6332  1.3719 0.6568          0.9467          0.2082          0.6961             0.1753          0.2596        0.9524      0.0103             321          0.2690        199      0.4496
+117       712   30.5681  1.0408 0.9425          0.8138          0.1558          0.9537             0.0473          0.3071        0.0888      0.0152             399          0.2607        150      0.7672
+346       733  185.9762  1.7631 0.5071          0.9049          0.2230          0.9150             0.7412          0.2933        0.8773      0.0484             332          0.0546        101      0.8886
+# 2026-11-18 15:13:51 -03: Iteration 4 of 5
+# experimentsUsed: 2823
+# remainingBudget: 2177
+# currentBudget: 1088
+# nbConfigurations: 88
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . Alive configurations were already evaluated on this instance and nothing is discarded.
+     : All alive configurations are elite, but some need to be evaluated on this instance.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|         13|         88|        174|     7615.000000|         88|00:00:03|   NA|  NA|    NA|
+|x|          3|         88|        174|     8587.500000|        171|00:00:02|+0.07|0.54|0.9365|
+|x|          8|         88|        174|     8725.000000|        254|00:00:02|+0.22|0.48|0.7101|
+|x|          7|         88|        174|     8447.500000|        337|00:00:03|+0.31|0.48|0.6252|
+|-|          4|         76|        174|     8247.200000|        420|00:00:03|-0.00|0.20|1.0149|
+|=|          5|         76|        174|     8065.166667|        491|00:00:03|+0.01|0.18|0.9774|
+|=|         10|         76|        117|     7968.428571|        562|00:00:02|+0.03|0.17|0.9582|
+|-|          6|         61|        409|     8530.875000|        633|00:00:02|-0.05|0.08|0.9011|
+|=|          1|         61|        409|     8977.888889|        689|00:00:02|-0.03|0.08|0.8999|
+|=|          2|         61|        409|     8883.900000|        745|00:00:02|-0.02|0.08|0.9000|
+|=|         11|         61|        325|     8729.909091|        801|00:00:02|-0.01|0.08|0.9090|
+|=|         12|         61|        174|     9039.916667|        857|00:00:02|+0.01|0.09|0.9085|
+|=|          9|         61|        174|     8948.615385|        913|00:00:02|+0.01|0.08|0.9062|
+|=|         14|         61|        174|     9225.285714|        974|00:00:02|+0.00|0.08|0.9136|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:         174    mean value:      9225.285714
+Description of the best-so-far configuration:
+    .ID. poblacion lambdaCap lambdaT    rcl probCruzamiento probMutDeposito probMutClientes probMutIntercambio cierresFraccion cierresOlvido cierresPiso cierresGenSesgo mejoresFraccion mejoresTam mejoresProb .PARENT.
+174  174       654  101.8646  3.3328 0.6819          0.6994           0.174          0.8572             0.0734          0.1552        0.6132      0.0111             334           0.254        193      0.5339      117
+
+# 2026-11-18 15:14:29 -03: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    poblacion lambdaCap lambdaT    rcl probCruzamiento probMutDeposito probMutClientes probMutIntercambio cierresFraccion cierresOlvido cierresPiso cierresGenSesgo mejoresFraccion mejoresTam mejoresProb
+174       654  101.8646  3.3328 0.6819          0.6994          0.1740          0.8572             0.0734          0.1552        0.6132      0.0111             334          0.2540        193      0.5339
+396       505   74.9042  4.3974 0.3572          0.6820          0.1476          0.4069             0.1962          0.1697        0.4837      0.0119             234          0.1698        188      0.6097
+257       564  123.6651 12.0296 0.7985          0.8501          0.1690          0.9192             0.0492          0.2201        0.5941      0.0155             435          0.1870        140      0.7231
+465       790   75.4163  3.2296 0.8722          0.7173          0.0515          0.7514             0.1928          0.3742        0.9398      0.1131             374          0.3441        182      0.0799
+398       789   56.9548  4.8615 0.5964          0.7920          0.0350          0.7587             0.2974          0.1306        0.8774      0.0151             342          0.4729        174      0.6197
+# 2026-11-18 15:14:29 -03: Iteration 5 of 5
+# experimentsUsed: 3797
+# remainingBudget: 1203
+# currentBudget: 1203
+# nbConfigurations: 84
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . Alive configurations were already evaluated on this instance and nothing is discarded.
+     : All alive configurations are elite, but some need to be evaluated on this instance.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|         15|         84|        174|     13280.00000|         84|00:00:03|   NA|  NA|    NA|
+|x|         10|         84|        257|     10334.00000|        163|00:00:03|+0.03|0.51|0.5309|
+|x|          6|         84|        257|     11045.33333|        242|00:00:03|+0.18|0.45|0.7722|
+|x|         13|         84|        257|     10187.75000|        321|00:00:03|+0.18|0.39|0.8264|
+|-|          2|         61|        257|     9752.600000|        400|00:00:03|-0.00|0.20|0.7679|
+|=|         11|         61|        257|     9319.666667|        456|00:00:02|-0.00|0.16|0.7953|
+|=|          5|         61|        502|     9010.428571|        512|00:00:02|-0.02|0.13|0.8259|
+|=|          1|         61|        502|     9453.375000|        568|00:00:02|-0.01|0.12|0.8506|
+|=|         12|         61|        534|     9788.333333|        624|00:00:02|+0.00|0.11|0.8667|
+|=|          8|         61|        534|     9709.500000|        680|00:00:01|-0.00|0.10|0.8762|
+|=|          4|         61|        534|     9509.272727|        736|00:00:02|+0.01|0.10|0.8852|
+|=|          9|         61|        534|     9371.250000|        792|00:00:02|+0.01|0.09|0.8789|
+|=|          7|         61|        534|     9236.153846|        848|00:00:02|+0.01|0.09|0.8695|
+|=|         14|         61|        534|     9473.142857|        904|00:00:02|+0.01|0.08|0.8852|
+|=|          3|         61|        534|     9478.933333|        960|00:00:02|+0.02|0.08|0.8717|
+|=|         16|         61|        534|     9716.500000|       1021|00:00:02|+0.02|0.08|0.8668|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:         534    mean value:      9716.500000
+Description of the best-so-far configuration:
+    .ID. poblacion lambdaCap lambdaT    rcl probCruzamiento probMutDeposito probMutClientes probMutIntercambio cierresFraccion cierresOlvido cierresPiso cierresGenSesgo mejoresFraccion mejoresTam mejoresProb .PARENT.
+534  534       514  186.6979 10.6254 0.5912           0.971           0.156          0.3067              0.066          0.2609        0.5075       0.027             237          0.2235        179      0.4955      396
+
+# 2026-11-18 15:15:11 -03: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    poblacion lambdaCap lambdaT    rcl probCruzamiento probMutDeposito probMutClientes probMutIntercambio cierresFraccion cierresOlvido cierresPiso cierresGenSesgo mejoresFraccion mejoresTam mejoresProb
+534       514  186.6979 10.6254 0.5912          0.9710          0.1560          0.3067             0.0660          0.2609        0.5075      0.0270             237          0.2235        179      0.4955
+539       755  395.2261 11.0945 0.5953          0.7251          0.0383          0.6269             0.2474          0.2817        0.7249      0.0393             222          0.4545        132      0.6479
+174       654  101.8646  3.3328 0.6819          0.6994          0.1740          0.8572             0.0734          0.1552        0.6132      0.0111             334          0.2540        193      0.5339
+465       790   75.4163  3.2296 0.8722          0.7173          0.0515          0.7514             0.1928          0.3742        0.9398      0.1131             374          0.3441        182      0.0799
+396       505   74.9042  4.3974 0.3572          0.6820          0.1476          0.4069             0.1962          0.1697        0.4837      0.0119             234          0.1698        188      0.6097
+# 2026-11-18 15:15:11 -03: Iteration 6 of 6
+# experimentsUsed: 4818
+# remainingBudget: 182
+# currentBudget: 182
+# nbConfigurations: 15
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . Alive configurations were already evaluated on this instance and nothing is discarded.
+     : All alive configurations are elite, but some need to be evaluated on this instance.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|         17|         15|        534|     8490.000000|         15|00:00:00|   NA|  NA|    NA|
+|x|          1|         15|        534|     10522.00000|         25|00:00:00|+0.04|0.52|0.9352|
+|x|         15|         15|        534|     11441.33333|         35|00:00:00|+0.16|0.44|0.7802|
+|x|          9|         15|        534|     10544.25000|         45|00:00:00|+0.12|0.34|0.8310|
+|=|         16|         15|        534|     11091.40000|         55|00:00:00|+0.15|0.32|0.7856|
+|=|          4|         15|        539|     10483.83333|         65|00:00:00|+0.11|0.26|0.8234|
+|-|         13|         13|        539|     10074.00000|         75|00:00:00|+0.01|0.16|0.5186|
+|=|         11|         13|        174|     9709.125000|         83|00:00:00|+0.02|0.14|0.5854|
+|=|          2|         13|        174|     9520.555556|         91|00:00:00|+0.08|0.18|0.5846|
+|=|          3|         13|        174|     9524.500000|         99|00:00:00|+0.04|0.14|0.6423|
+|=|          6|         13|        174|     9792.090909|        107|00:00:00|+0.05|0.14|0.6519|
+|=|          8|         13|        174|     9726.083333|        115|00:00:00|+0.05|0.12|0.5992|
+|=|          7|         13|        174|     9563.692308|        123|00:00:00|+0.06|0.13|0.6060|
+|=|          5|         13|        174|     9391.642857|        131|00:00:00|+0.05|0.12|0.5651|
+|-|         12|         10|        174|     9596.733333|        139|00:00:00|-0.01|0.06|0.4919|
+|=|         14|         10|        174|     9798.312500|        144|00:00:00|+0.00|0.07|0.5136|
+|=|         10|         10|        534|     9644.352941|        149|00:00:00|+0.00|0.06|0.5365|
+|=|         18|         10|        534|     9522.222222|        159|00:00:00|+0.01|0.07|0.5511|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:         534    mean value:      9522.222222
+Description of the best-so-far configuration:
+    .ID. poblacion lambdaCap lambdaT    rcl probCruzamiento probMutDeposito probMutClientes probMutIntercambio cierresFraccion cierresOlvido cierresPiso cierresGenSesgo mejoresFraccion mejoresTam mejoresProb .PARENT.
+534  534       514  186.6979 10.6254 0.5912           0.971           0.156          0.3067              0.066          0.2609        0.5075       0.027             237          0.2235        179      0.4955      396
+
+# 2026-11-18 15:15:18 -03: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    poblacion lambdaCap lambdaT    rcl probCruzamiento probMutDeposito probMutClientes probMutIntercambio cierresFraccion cierresOlvido cierresPiso cierresGenSesgo mejoresFraccion mejoresTam mejoresProb
+534       514  186.6979 10.6254 0.5912          0.9710          0.1560          0.3067             0.0660          0.2609        0.5075      0.0270             237          0.2235        179      0.4955
+539       755  395.2261 11.0945 0.5953          0.7251          0.0383          0.6269             0.2474          0.2817        0.7249      0.0393             222          0.4545        132      0.6479
+559       712  712.4564  4.1584 0.6836          0.7780          0.0388          0.6541             0.2706          0.2989        0.6930      0.0143             216          0.4277        177      0.4707
+174       654  101.8646  3.3328 0.6819          0.6994          0.1740          0.8572             0.0734          0.1552        0.6132      0.0111             334          0.2540        193      0.5339
+465       790   75.4163  3.2296 0.8722          0.7173          0.0515          0.7514             0.1928          0.3742        0.9398      0.1131             374          0.3441        182      0.0799
+# 2026-11-18 15:15:18 -03: Iteration 7 of 7
+# experimentsUsed: 4977
+# remainingBudget: 23
+# currentBudget: 23
+# nbConfigurations: 6
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . Alive configurations were already evaluated on this instance and nothing is discarded.
+     : All alive configurations are elite, but some need to be evaluated on this instance.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|         13|          6|        534|     7615.000000|          1|00:00:00|   NA|  NA|    NA|
+|x|         18|          6|        534|     7530.500000|          2|00:00:00|+0.00|0.50|0.4167|
+|x|         10|          6|        534|     7483.000000|          3|00:00:00|+0.22|0.48|0.3622|
+|x|         15|          6|        534|     8932.250000|          4|00:00:00|+0.15|0.36|0.3200|
+|=|          3|          6|        534|     9057.800000|          5|00:00:00|+0.11|0.29|0.2753|
+|=|         16|          6|        534|     9761.500000|          6|00:00:00|+0.09|0.24|0.2391|
+|=|          7|          6|        534|     9454.857143|          7|00:00:00|+0.07|0.21|0.2105|
+|=|          4|          6|        539|     9203.750000|          8|00:00:00|-0.07|0.07|0.3277|
+|=|          6|          6|        539|     9566.444444|          9|00:00:00|-0.04|0.08|0.3862|
+|=|         11|          6|        534|     9331.400000|         10|00:00:00|-0.05|0.05|0.4503|
+|=|         12|          6|        534|     9616.545455|         11|00:00:00|-0.00|0.09|0.4695|
+|=|         17|          6|        534|     9522.666667|         12|00:00:00|+0.05|0.13|0.4754|
+|=|          8|          6|        534|     9482.461538|         13|00:00:00|+0.05|0.12|0.4397|
+|=|          2|          6|        534|     9377.428571|         14|00:00:00|+0.09|0.16|0.4425|
+|=|         14|          6|        534|     9589.200000|         15|00:00:00|+0.05|0.12|0.4805|
+|=|          1|          6|        534|     9774.500000|         16|00:00:00|+0.08|0.13|0.4878|
+|=|          9|          6|        534|     9661.470588|         17|00:00:00|+0.07|0.13|0.4610|
+|=|          5|          6|        534|     9522.222222|         18|00:00:00|+0.07|0.12|0.4370|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:         534    mean value:      9522.222222
+Description of the best-so-far configuration:
+    .ID. poblacion lambdaCap lambdaT    rcl probCruzamiento probMutDeposito probMutClientes probMutIntercambio cierresFraccion cierresOlvido cierresPiso cierresGenSesgo mejoresFraccion mejoresTam mejoresProb .PARENT.
+534  534       514  186.6979 10.6254 0.5912           0.971           0.156          0.3067              0.066          0.2609        0.5075       0.027             237          0.2235        179      0.4955      396
+
+# 2026-11-18 15:15:21 -03: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    poblacion lambdaCap lambdaT    rcl probCruzamiento probMutDeposito probMutClientes probMutIntercambio cierresFraccion cierresOlvido cierresPiso cierresGenSesgo mejoresFraccion mejoresTam mejoresProb
+534       514  186.6979 10.6254 0.5912          0.9710          0.1560          0.3067             0.0660          0.2609        0.5075      0.0270             237          0.2235        179      0.4955
+539       755  395.2261 11.0945 0.5953          0.7251          0.0383          0.6269             0.2474          0.2817        0.7249      0.0393             222          0.4545        132      0.6479
+559       712  712.4564  4.1584 0.6836          0.7780          0.0388          0.6541             0.2706          0.2989        0.6930      0.0143             216          0.4277        177      0.4707
+174       654  101.8646  3.3328 0.6819          0.6994          0.1740          0.8572             0.0734          0.1552        0.6132      0.0111             334          0.2540        193      0.5339
+465       790   75.4163  3.2296 0.8722          0.7173          0.0515          0.7514             0.1928          0.3742        0.9398      0.1131             374          0.3441        182      0.0799
+# 2026-11-18 15:15:21 -03: Stopped because there is not enough budget left to race more than the minimum (5).
+# You may either increase the budget or set 'minNbSurvival' to a lower value.
+# Iteration: 8
+# nbIterations: 8
+# experimentsUsed: 4995
+# timeUsed: 0
+# remainingBudget: 5
+# currentBudget: 5
+# number of elites: 5
+# nbConfigurations: 5
+# Total CPU user time: 1017.083, CPU sys time: 114.997, Wall-clock time: 188.476
+# 2026-11-18 15:15:21 -03: Starting post-selection:
+# Configurations selected: 534, 539, 559, 174, 465.
+# Pending instances: 0, 0, 0, 0, 0.
+# 2026-11-18 15:15:21 -03: seed: 20261118
+# Configurations: 5
+# Available experiments: 5
+# minSurvival: 1
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . Alive configurations were already evaluated on this instance and nothing is discarded.
+     : All alive configurations are elite, but some need to be evaluated on this instance.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|.|          1|          5|        174|     12554.00000|          0|00:00:00|   NA|  NA|    NA|
+|.|         14|          5|        174|     12688.00000|          0|00:00:00|-0.38|0.31|1.1238|
+|.|         18|          5|        174|     10961.00000|          0|00:00:00|+0.06|0.37|0.7231|
+|.|          4|          5|        174|     10082.25000|          0|00:00:00|-0.09|0.18|0.8716|
+|.|          3|          5|        174|     9977.800000|          0|00:00:00|-0.07|0.15|0.6829|
+|.|         17|          5|        174|     9729.833333|          0|00:00:00|-0.05|0.12|0.5620|
+|.|          6|          5|        174|     10121.00000|          0|00:00:00|-0.04|0.10|0.4776|
+|.|         11|          5|        174|     9750.250000|          0|00:00:00|-0.11|0.03|0.5574|
+|.|          2|          5|        174|     9557.111111|          0|00:00:00|-0.09|0.03|0.4891|
+|.|          7|          5|        174|     9362.900000|          0|00:00:00|-0.08|0.02|0.4357|
+|.|          5|          5|        174|     9162.181818|          0|00:00:00|-0.08|0.02|0.3928|
+|.|          9|          5|        174|     9053.083333|          0|00:00:00|-0.07|0.02|0.3577|
+|.|         10|          5|        174|     8928.307692|          0|00:00:00|-0.04|0.04|0.3835|
+|.|         12|          5|        174|     9181.142857|          0|00:00:00|-0.03|0.04|0.3551|
+|.|          8|          5|        174|     9169.066667|          0|00:00:00|-0.03|0.04|0.3306|
+|.|         16|          5|        174|     9426.000000|          0|00:00:00|-0.03|0.04|0.3093|
+|.|         15|          5|        174|     9652.705882|          0|00:00:00|-0.03|0.03|0.2905|
+|.|         13|          5|        174|     9539.500000|          0|00:00:00|-0.03|0.03|0.2739|
+|=|         19|          5|        534|     9397.631579|          5|00:00:00|-0.02|0.03|0.2591|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:         534    mean value:      9397.631579
+Description of the best-so-far configuration:
+    .ID. poblacion lambdaCap lambdaT    rcl probCruzamiento probMutDeposito probMutClientes probMutIntercambio cierresFraccion cierresOlvido cierresPiso cierresGenSesgo mejoresFraccion mejoresTam mejoresProb .PARENT.
+534  534       514  186.6979 10.6254 0.5912           0.971           0.156          0.3067              0.066          0.2609        0.5075       0.027             237          0.2235        179      0.4955      396
+
+# 2026-11-18 15:15:21 -03: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    poblacion lambdaCap lambdaT    rcl probCruzamiento probMutDeposito probMutClientes probMutIntercambio cierresFraccion cierresOlvido cierresPiso cierresGenSesgo mejoresFraccion mejoresTam mejoresProb
+534       514  186.6979 10.6254 0.5912          0.9710          0.1560          0.3067             0.0660          0.2609        0.5075      0.0270             237          0.2235        179      0.4955
+539       755  395.2261 11.0945 0.5953          0.7251          0.0383          0.6269             0.2474          0.2817        0.7249      0.0393             222          0.4545        132      0.6479
+559       712  712.4564  4.1584 0.6836          0.7780          0.0388          0.6541             0.2706          0.2989        0.6930      0.0143             216          0.4277        177      0.4707
+174       654  101.8646  3.3328 0.6819          0.6994          0.1740          0.8572             0.0734          0.1552        0.6132      0.0111             334          0.2540        193      0.5339
+465       790   75.4163  3.2296 0.8722          0.7173          0.0515          0.7514             0.1928          0.3742        0.9398      0.1131             374          0.3441        182      0.0799
+# Total CPU user time: 1017.997, CPU sys time: 115.096, Wall-clock time: 188.732
+# Best configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    poblacion lambdaCap lambdaT    rcl probCruzamiento probMutDeposito probMutClientes probMutIntercambio cierresFraccion cierresOlvido cierresPiso cierresGenSesgo mejoresFraccion mejoresTam mejoresProb
+534       514  186.6979 10.6254 0.5912          0.9710          0.1560          0.3067             0.0660          0.2609        0.5075      0.0270             237          0.2235        179      0.4955
+539       755  395.2261 11.0945 0.5953          0.7251          0.0383          0.6269             0.2474          0.2817        0.7249      0.0393             222          0.4545        132      0.6479
+559       712  712.4564  4.1584 0.6836          0.7780          0.0388          0.6541             0.2706          0.2989        0.6930      0.0143             216          0.4277        177      0.4707
+174       654  101.8646  3.3328 0.6819          0.6994          0.1740          0.8572             0.0734          0.1552        0.6132      0.0111             334          0.2540        193      0.5339
+465       790   75.4163  3.2296 0.8722          0.7173          0.0515          0.7514             0.1928          0.3742        0.9398      0.1131             374          0.3441        182      0.0799
+# Best configurations as commandlines (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+534 --poblacion 514 --lambdaCap 186.6979 --lambdaT 10.6254 --rcl 0.5912 --probCruzamiento 0.971 --probMutDeposito 0.156 --probMutClientes 0.3067 --probMutIntercambio 0.066 --cierresFraccion 0.2609 --cierresOlvido 0.5075 --cierresPiso 0.027 --cierresGenSesgo 237 --mejoresFraccion 0.2235 --mejoresTam 179 --mejoresProb 0.4955
+539 --poblacion 755 --lambdaCap 395.2261 --lambdaT 11.0945 --rcl 0.5953 --probCruzamiento 0.7251 --probMutDeposito 0.0383 --probMutClientes 0.6269 --probMutIntercambio 0.2474 --cierresFraccion 0.2817 --cierresOlvido 0.7249 --cierresPiso 0.0393 --cierresGenSesgo 222 --mejoresFraccion 0.4545 --mejoresTam 132 --mejoresProb 0.6479
+559 --poblacion 712 --lambdaCap 712.4564 --lambdaT 4.1584 --rcl 0.6836 --probCruzamiento 0.778 --probMutDeposito 0.0388 --probMutClientes 0.6541 --probMutIntercambio 0.2706 --cierresFraccion 0.2989 --cierresOlvido 0.693 --cierresPiso 0.0143 --cierresGenSesgo 216 --mejoresFraccion 0.4277 --mejoresTam 177 --mejoresProb 0.4707
+174 --poblacion 654 --lambdaCap 101.8646 --lambdaT 3.3328 --rcl 0.6819 --probCruzamiento 0.6994 --probMutDeposito 0.174 --probMutClientes 0.8572 --probMutIntercambio 0.0734 --cierresFraccion 0.1552 --cierresOlvido 0.6132 --cierresPiso 0.0111 --cierresGenSesgo 334 --mejoresFraccion 0.254 --mejoresTam 193 --mejoresProb 0.5339
+465 --poblacion 790 --lambdaCap 75.4163 --lambdaT 3.2296 --rcl 0.8722 --probCruzamiento 0.7173 --probMutDeposito 0.0515 --probMutClientes 0.7514 --probMutIntercambio 0.1928 --cierresFraccion 0.3742 --cierresOlvido 0.9398 --cierresPiso 0.1131 --cierresGenSesgo 374 --mejoresFraccion 0.3441 --mejoresTam 182 --mejoresProb 0.0799
+
+
+# Testing of elite configurations: 1 
+# Testing iteration configurations: FALSE 
+# 2026-11-18 15:15:21 -03: No test instances, skip testing
