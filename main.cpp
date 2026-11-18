@@ -120,17 +120,22 @@ int main(int argc, char* argv[]) {
             // del archivo Mejores, al azar. Si no, es otro individuo de la población, distinto del padre 1.
             int j = distPareja(rng);
             if (j >= i) j++;
-            const Individuo& Padre2 = monedaMejores(rng) ? Mejores[distMejores(rng)] : Poblacion[j]; 
+            const Individuo& Padre2 = monedaMejores(rng) ? Mejores[distMejores(rng)] : Poblacion[j];
 
             // Cruce: si la moneda no sale, el hijo parte como copia del padre 1.
-            Individuo hijo = Padre1;
-            if (monedaCruce(rng)) hijo = cruzarTrips(Padre1.sol, Padre2.sol, inst, p, rng);
+            Individuo hijo;
+            hijo.sol = Padre1.sol;
+            if (monedaCruce(rng)) hijo.sol = cruzarTrips(Padre1.sol, Padre2.sol, inst, p, rng);
 
             // Mutaciones: cada una decide adentro, con su propia moneda, si cambia algo.
             // mutarDeposito es la influencia del espacio normativo: sortea los retornos con TablaCierres.
-            hijo = mutarDeposito(inst, p, hijo, TablaCierres, gen, rng);
-            hijo = mutarClientes(inst, p, hijo, rng);
-            hijo = intercambiarTrips(inst, p, hijo, rng);
+            hijo.sol = mutarDeposito(inst, p, hijo.sol, TablaCierres, gen, rng);
+            hijo.sol = mutarClientes(inst, p, hijo.sol, rng);
+            hijo.sol = intercambiarTrips(inst, p, hijo.sol, rng);
+
+            // Evaluación
+            hijo.eval = evaluar(inst, hijo.sol);
+            hijo.fitness = fitness(hijo.eval, p.lambdaCap, p.lambdaT);
 
             // Reemplazo: el hijo ocupa el lugar del padre 1 solo si lo mejora.
             if (hijo.fitness < Padre1.fitness) nextGen[i] = hijo;

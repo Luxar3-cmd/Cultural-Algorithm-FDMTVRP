@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Individuo cruzarTrips(const Solucion& Padre1, const Solucion& Padre2, const Instancia& inst, const Parametros& p, mt19937& rng) {
+Solucion cruzarTrips(const Solucion& Padre1, const Solucion& Padre2, const Instancia& inst, const Parametros& p, mt19937& rng) {
     Solucion hijo = Padre2; // El hijo parte como una copia del padre 2
 
     for (int k = 0; k < inst.numVehicles; k++){ // Por CADA VEHICULO intentaremos insertar un trip.
@@ -43,9 +43,5 @@ Individuo cruzarTrips(const Solucion& Padre1, const Solucion& Padre2, const Inst
     // puedeRecargar y puedeTerminar. Si no, se reasigna al permitido más cercano.
     for (int k = 0; k < inst.numVehicles; k++) corregirCierre(inst, k, hijo[k]);
 
-    Individuo ind;
-    ind.sol = hijo;
-    ind.eval = evaluar(inst, ind.sol);
-    ind.fitness = fitness(ind.eval, p.lambdaCap, p.lambdaT);
-    return ind;
+    return hijo;
 }

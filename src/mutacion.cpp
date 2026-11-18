@@ -8,8 +8,7 @@
 
 using namespace std;
 
-Individuo mutarDeposito(const Instancia& inst, const Parametros& p, Individuo ind, const vector<vector<double>>& tablaCierres, int generacion, mt19937& rng) {
-    Solucion& sol = ind.sol;
+Solucion mutarDeposito(const Instancia& inst, const Parametros& p, Solucion sol, const vector<vector<double>>& tablaCierres, int generacion, mt19937& rng) {
     bernoulli_distribution moneda(p.probMutDeposito);
     bool sesgar = generacion >= p.cierresGenSesgo; // Antes de esa generacion el sorteo sobre los depósitos es uniforme
 
@@ -53,16 +52,14 @@ Individuo mutarDeposito(const Instancia& inst, const Parametros& p, Individuo in
             trip.retorno = candidatos[dist(rng)];
         }
     }
-    ind.eval = evaluar(inst, ind.sol);
-    ind.fitness = fitness(ind.eval, p.lambdaCap, p.lambdaT);
-    return ind;
+    return sol;
 }
 
-Individuo mutarClientes (const Instancia& inst, const Parametros& p, Individuo ind, mt19937& rng) {
+Solucion mutarClientes (const Instancia& inst, const Parametros& p, Solucion sol, mt19937& rng) {
     bernoulli_distribution moneda(p.probMutClientes); // Se tira una moneda cargada con la probabilidad de mutacion configurada.
 
     for (int k = 0; k < inst.numVehicles; k++) {
-        vector<Trip>& trips = ind.sol[k].trips; // Por cada vehículo accedemos a sus trips.
+        vector<Trip>& trips = sol[k].trips; // Por cada vehículo accedemos a sus trips.
         if (trips.empty()) continue;
         if (!moneda(rng)) continue; // Hay una chance de que el vehiculo salga seleccionado para mutar.
 
@@ -81,17 +78,14 @@ Individuo mutarClientes (const Instancia& inst, const Parametros& p, Individuo i
             shuffle(clientes.begin(), clientes.end(), rng);
         }
     }
-
-    ind.eval = evaluar(inst, ind.sol);
-    ind.fitness = fitness(ind.eval, p.lambdaCap, p.lambdaT);
-    return ind;
+    return sol;
 }
 
-Individuo intercambiarTrips( const Instancia& inst, const Parametros& p, Individuo ind, mt19937& rng) {
+Solucion intercambiarTrips( const Instancia& inst, const Parametros& p, Solucion sol, mt19937& rng) {
     bernoulli_distribution moneda(p.probMutIntercambio); // Una moneda cargada por vehiculo
 
     for (int k = 0; k < inst.numVehicles; k++) {
-        vector<Trip>& trips = ind.sol[k].trips;
+        vector<Trip>& trips = sol[k].trips;
         int n = trips.size();
         if (n < 2) continue; // NO hay dos trips que intercambiar
         if (!moneda(rng)) continue;
@@ -104,9 +98,7 @@ Individuo intercambiarTrips( const Instancia& inst, const Parametros& p, Individ
         if ( j >= i) j++; // Salta la posicion i
 
         swap(trips[i],trips[j]);
-        corregirCierre(inst, k, ind.sol[k]);  // Checkea el caso de que el nuevo último trip no pueda terminar por permisos.
+        corregirCierre(inst, k, sol[k]);  // Checkea el caso de que el nuevo último trip no pueda terminar por permisos.
     }
-    ind.eval = evaluar(inst, ind.sol);
-    ind.fitness = fitness(ind.eval, p.lambdaCap, p.lambdaT);
-    return ind;
+    return sol;
 }
