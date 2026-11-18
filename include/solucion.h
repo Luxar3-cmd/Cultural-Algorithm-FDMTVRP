@@ -43,7 +43,6 @@ struct Parametros {
     unsigned semilla;          // Semilla del generador aleatorio.
     int poblacion;             // Tamaño de la población.
     int nGeneraciones;         // Máximo de generaciones (criterio de término).
-    int genSinMejora;          // Corta si el mejor fitness no baja en esta cantidad de generaciones seguidas; 0 = no corta.
 
     // --- Restricciones y evaluación ---
     int maxTrips;              // Máximo de trips por route; 0 = sin límite.

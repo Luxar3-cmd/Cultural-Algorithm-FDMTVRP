@@ -59,7 +59,6 @@ make run Instancias/2-InstanciasB_redefinidas/b-Instancia11_veh2_cap2_rel1.dat -
     --semilla 7 \
     --poblacion 100 \
     --nGeneraciones 100 \
-    --genSinMejora 250 \
     --maxTrips 3 \
     --lambdaCap 1 \
     --lambdaT 1 \
@@ -86,9 +85,8 @@ Todos son opcionales: el que no se entrega toma su valor por defecto. Un nombre 
 | Opción | Por defecto | Significado |
 |---|---|---|
 | `--semilla` | sorteada | Semilla del generador aleatorio. Con la misma semilla la ejecución se repite idéntica. |
-| `--poblacion` | 500 | Tamaño de la población. |
+| `--poblacion` | 50 | Tamaño de la población. |
 | `--nGeneraciones` | 10000 | Criterio de término: máximo de generaciones. |
-| `--genSinMejora` | 250 | Criterio de término: generaciones seguidas sin que baje el mejor fitness; `0` = no corta. |
 | `--maxTrips` | 3 | Máximo de trips por route; `0` = sin límite. |
 | `--lambdaCap` | 1 | Castigo por unidad de exceso de carga. |
 | `--lambdaT` | 1 | Castigo por unidad de exceso de tiempo. |
@@ -105,7 +103,7 @@ Todos son opcionales: el que no se entrega toma su valor por defecto. Un nombre 
 | `--mejoresTam` | 50 | Tamaño máximo del archivo de mejores. |
 | `--mejoresProb` | 0.2 | Probabilidad de que el segundo padre salga del archivo de mejores y no de la población. |
 
-El algoritmo termina con lo que ocurra primero entre `--nGeneraciones` y `--genSinMejora`.
+El algoritmo termina al completar `--nGeneraciones` generaciones.
 
 ### Salida
 

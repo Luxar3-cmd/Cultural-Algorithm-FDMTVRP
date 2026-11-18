@@ -15,9 +15,8 @@ Parametros parametrosPorDefecto() {
 
     // Ejecución
     p.semilla = 0;
-    p.poblacion = 500;
+    p.poblacion = 50;
     p.nGeneraciones = 10000;
-    p.genSinMejora = 250;
 
     // Restricciones y evaluación
     p.maxTrips = 3;
@@ -67,7 +66,6 @@ Parametros leerParametros(int argc, char* argv[]) {
         }
         else if (bandera == "--poblacion")          p.poblacion = stoi(valor);
         else if (bandera == "--nGeneraciones")      p.nGeneraciones = stoi(valor);
-        else if (bandera == "--genSinMejora")       p.genSinMejora = stoi(valor);
         // Restricciones y evaluación
         else if (bandera == "--maxTrips")           p.maxTrips = stoi(valor);
         else if (bandera == "--lambdaCap")          p.lambdaCap = stod(valor);
@@ -107,7 +105,6 @@ void imprimirUso(const char* programa) {
          << "    --semilla N             Semilla del generador aleatorio (se sortea si no se entrega)\n"
          << "    --poblacion N           Tamano de la poblacion (" << d.poblacion << ")\n"
          << "    --nGeneraciones N       Maximo de generaciones (" << d.nGeneraciones << ")\n"
-         << "    --genSinMejora N        Termina tras N generaciones sin mejora; 0 = no corta (" << d.genSinMejora << ")\n"
          << "  Restricciones y evaluacion\n"
          << "    --maxTrips N            Maximo de trips por route; 0 = sin limite (" << d.maxTrips << ")\n"
          << "    --lambdaCap X           Castigo por unidad de exceso de carga (" << d.lambdaCap << ")\n"
@@ -137,8 +134,7 @@ void imprimirParametros(const Parametros& p) {
     cout << " --------------- Parametros ---------------" << endl;
     cout << "semilla: " << p.semilla
          << "  poblacion: " << p.poblacion
-         << "  nGeneraciones: " << p.nGeneraciones
-         << "  genSinMejora: " << p.genSinMejora << endl;
+         << "  nGeneraciones: " << p.nGeneraciones << endl;
     cout << "maxTrips: " << p.maxTrips
          << "  lambdaCap: " << p.lambdaCap
          << "  lambdaT: " << p.lambdaT

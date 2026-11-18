@@ -93,14 +93,12 @@ int main(int argc, char* argv[]) {
     // 7. Bucle de generaciones
     //    En cada generación todo individuo tiene un turno como padre 1: busca pareja, nace un
     //    hijo, el hijo muta y, si mejora al padre 1, ocupa su lugar en la generación siguiente.
-    //    Termina al llegar a p.nGeneraciones o tras p.genSinMejora generaciones sin mejorar.
+    //    Termina al llegar a p.nGeneraciones.
     // ---------------------------------------------------------
     bernoulli_distribution monedaCruce(p.probCruzamiento);
     bernoulli_distribution monedaMejores(p.mejoresProb); // Usado para ver si un padre será el utilizado del espacio de creencias para realizar el cruce.
     uniform_int_distribution<int> distPareja(0, p.poblacion - 2); // Posición del padre 2 entre los demás individuos.
 
-    double mejorFitness = Poblacion[0].fitness; // Mejor fitness visto hasta ahora.
-    int generacionesSinMejora = 0;              // Generaciones seguidas en que no bajó.
     int generacionesEjecutadas = 0;
 
     // Mejor individuo factible de toda la ejecución: es lo que se entrega al final.
@@ -152,18 +150,6 @@ int main(int argc, char* argv[]) {
         generacionesEjecutadas++;
 
         cout << "Generacion " << gen << ": mejor fitness " << Poblacion[0].fitness << endl;
-
-        // Criterio de término por estancamiento.
-        if (Poblacion[0].fitness < mejorFitness) {
-            mejorFitness = Poblacion[0].fitness;
-            generacionesSinMejora = 0;
-        } else {
-            generacionesSinMejora++;
-        }
-        if (p.genSinMejora > 0 && generacionesSinMejora >= p.genSinMejora) {
-            cout << "Termino: " << p.genSinMejora << " generaciones sin mejora." << endl;
-            break;
-        }
     }
 
     // ---------------------------------------------------------
