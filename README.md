@@ -80,28 +80,30 @@ Los mismos comandos sirven con `./main` en lugar de `make run`, quitando el `--`
 
 ### Parámetros
 
-Todos son opcionales: el que no se entrega toma su valor por defecto. Un nombre desconocido, un valor que falta o un valor fuera de rango detienen el programa con un mensaje.
+Todos son opcionales: el que no se entrega toma su valor por defecto. Cada uno se entrega como `--nombre valor`. Los de tipo entero se escriben sin decimales (`200`) y los de tipo real con punto decimal (`0.35`).
 
-| Opción | Por defecto | Significado |
-|---|---|---|
-| `--semilla` | sorteada | Semilla del generador aleatorio. Con la misma semilla la ejecución se repite idéntica. |
-| `--poblacion` | 50 | Tamaño de la población. |
-| `--nGeneraciones` | 10000 | Criterio de término: máximo de generaciones. |
-| `--maxTrips` | 3 | Máximo de trips por route; `0` = sin límite. |
-| `--lambdaCap` | 1 | Castigo por unidad de exceso de carga. |
-| `--lambdaT` | 1 | Castigo por unidad de exceso de tiempo. |
-| `--rcl` | 0.6 | Fracción de candidatos más cercanos entre los que sortea la inicialización. |
-| `--probCruzamiento` | 0.6 | Probabilidad de que el hijo nazca del cruce; si no, es copia del padre 1. |
-| `--probMutDeposito` | 0.2 | Probabilidad de mutar cada depósito. |
-| `--probMutClientes` | 0.2 | Probabilidad, por vehículo, de barajar clientes dentro de sus trips. |
-| `--probMutIntercambio` | 0.2 | Probabilidad, por vehículo, de intercambiar dos de sus trips. |
-| `--cierresFraccion` | 0.2 | Fracción mejor de la población que alimenta la tabla de cierres. |
-| `--cierresOlvido` | 0.7 | Factor por el que se multiplica la tabla en cada generación. |
-| `--cierresPiso` | 0.1 | Peso mínimo de cada depósito candidato al sortear un retorno. |
-| `--cierresGenSesgo` | 20 | Generación desde la que los retornos se sortean con la tabla. |
-| `--mejoresFraccion` | 0.2 | Fracción mejor de la población que postula al archivo de mejores. |
-| `--mejoresTam` | 50 | Tamaño máximo del archivo de mejores. |
-| `--mejoresProb` | 0.2 | Probabilidad de que el segundo padre salga del archivo de mejores y no de la población. |
+| Opción | Tipo | Dominio | Por defecto | Significado |
+|---|---|---|---|---|
+| `--semilla` | entero sin signo | 0 a 4294967295 | sorteada | Semilla del generador aleatorio. Con la misma semilla la ejecución se repite idéntica. |
+| `--poblacion` | entero | ≥ 2 | 50 | Tamaño de la población. |
+| `--nGeneraciones` | entero | ≥ 0 | 10000 | Criterio de término: máximo de generaciones. |
+| `--maxTrips` | entero | ≥ 0 | 3 | Máximo de trips por route; `0` = sin límite. |
+| `--lambdaCap` | real | ≥ 0 | 1 | Castigo por unidad de exceso de carga. |
+| `--lambdaT` | real | ≥ 0 | 1 | Castigo por unidad de exceso de tiempo. |
+| `--rcl` | real | (0, 1] | 0.6 | Fracción de candidatos más cercanos entre los que sortea la inicialización. |
+| `--probCruzamiento` | real | [0, 1] | 0.6 | Probabilidad de que el hijo nazca del cruce; si no, es copia del padre 1. |
+| `--probMutDeposito` | real | [0, 1] | 0.2 | Probabilidad de mutar cada depósito. |
+| `--probMutClientes` | real | [0, 1] | 0.2 | Probabilidad, por vehículo, de barajar clientes dentro de sus trips. |
+| `--probMutIntercambio` | real | [0, 1] | 0.2 | Probabilidad, por vehículo, de intercambiar dos de sus trips. |
+| `--cierresFraccion` | real | [0, 1] | 0.2 | Fracción mejor de la población que alimenta la tabla de cierres. |
+| `--cierresOlvido` | real | [0, 1] | 0.7 | Factor por el que se multiplica la tabla en cada generación. |
+| `--cierresPiso` | real | > 0 | 0.1 | Peso mínimo de cada depósito candidato al sortear un retorno. |
+| `--cierresGenSesgo` | entero | ≥ 0 | 20 | Generación desde la que los retornos se sortean con la tabla. |
+| `--mejoresFraccion` | real | (0, 1] | 0.2 | Fracción mejor de la población que postula al archivo de mejores. |
+| `--mejoresTam` | entero | ≥ 1 | 50 | Tamaño máximo del archivo de mejores. |
+| `--mejoresProb` | real | [0, 1] | 0.2 | Probabilidad de que el segundo padre salga del archivo de mejores y no de la población. |
+
+El dominio indica los valores con los que el algoritmo está definido. El programa no los valida: un valor que no es un número lo detiene con un error, un valor numérico fuera del dominio produce un comportamiento indefinido, y un nombre de opción desconocido se ignora. Los rangos explorados en la sintonización, más acotados, están en `sintonizacion/parameters.txt`.
 
 El algoritmo termina al completar `--nGeneraciones` generaciones.
 
