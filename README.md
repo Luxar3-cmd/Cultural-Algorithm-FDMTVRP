@@ -1,29 +1,3 @@
-Este es el primer push
-
-Decisiones que debo tomar:
-
-- Con qué algoritmo me voy a comparar. (Yo creo que con el del paper FDMTVRP)
-- Representación de la solución
-- Inicialización de la población
-- Cruzamiento de la población
-- Mutación de la población
-
-Experimental mente:
-1. Definir qué responder (Pregunta)
-  Es mi algoritmo mejor que los mejores conocidos para el problema?
-  Es mi variante de algoritmo mejor que otra variante similar?
-  Para este problema, ¿Funciona mejor ILS, SA o Búsqueda Tabú?
-  ¿El operador de reparación que agregué genera una mejora en el desempeño?
-
-  Contra quién debería compararme, qué instancias utilizar, que tipo de algoritmo, etc.
-
-2. Cómo diseñar el experimento (Diseño)
-
----
-
-Contra quién te comparas en el paper puede ser contra el estado del arte (A), mi familia de algoritmos (B), otras caracteristicas (C).
-
----
 
 # Implementación de algoritmo cultural
 
@@ -52,31 +26,57 @@ Ejemplos, con las instancias descomprimidas en `Instancias/`:
 
 `./main --help` muestra todas las opciones.
 
-`make run <instancia.dat>` compila si hace falta y ejecuta en un solo paso. Para pasar parámetros por esa vía hay que anteponer `--`, o `make` los toma como opciones propias. Con todos los parámetros especificados (aquí con sus valores por defecto):
+`make run <instancia.dat>` compila si hace falta y ejecuta en un solo paso. Para pasar parámetros por esa vía hay que anteponer `--`, o `make` los toma como opciones propias. Los dos comandos siguientes especifican todos los parámetros, con los valores que entregó la sintonización con irace para cada set (ver `sintonizacion/`).
+
+Set B (10 clientes). `--nGeneraciones 96` con `--poblacion 514` equivale al presupuesto de 50.000 evaluaciones usado al sintonizar:
 
 ```
-make run Instancias/2-InstanciasB_redefinidas/b-Instancia11_veh2_cap2_rel1.dat -- \
+make run Instancias/2-InstanciasB_redefinidas/b-Instancia14_veh2_cap2_rel1.dat -- \
     --semilla 7 \
-    --poblacion 100 \
-    --nGeneraciones 100 \
+    --poblacion 514 \
+    --nGeneraciones 96 \
     --maxTrips 3 \
-    --lambdaCap 1 \
-    --lambdaT 1 \
-    --rcl 0.6 \
-    --probCruzamiento 0.6 \
-    --probMutDeposito 0.2 \
-    --probMutClientes 0.2 \
-    --probMutIntercambio 0.2 \
-    --cierresFraccion 0.2 \
-    --cierresOlvido 0.7 \
-    --cierresPiso 0.1 \
-    --cierresGenSesgo 20 \
-    --mejoresFraccion 0.2 \
-    --mejoresTam 50 \
-    --mejoresProb 0.2
+    --lambdaCap 186.6979 \
+    --lambdaT 10.6254 \
+    --rcl 0.5912 \
+    --probCruzamiento 0.971 \
+    --probMutDeposito 0.156 \
+    --probMutClientes 0.3067 \
+    --probMutIntercambio 0.066 \
+    --cierresFraccion 0.2609 \
+    --cierresOlvido 0.5075 \
+    --cierresPiso 0.027 \
+    --cierresGenSesgo 237 \
+    --mejoresFraccion 0.2235 \
+    --mejoresTam 179 \
+    --mejoresProb 0.4955
 ```
 
-El mismo comando sirve con `./main` en lugar de `make run`, quitando el `--` suelto.
+Set E (100 clientes). `--nGeneraciones 2253` con `--poblacion 887` equivale al presupuesto de 2.000.000 de evaluaciones:
+
+```
+make run Instancias/5-InstanciasE_redefinidas/e-Instancia44_veh3_cap15_rel1.dat -- \
+    --semilla 7 \
+    --poblacion 887 \
+    --nGeneraciones 2253 \
+    --maxTrips 3 \
+    --lambdaCap 41.6121 \
+    --lambdaT 50.1507 \
+    --rcl 0.0547 \
+    --probCruzamiento 0.5455 \
+    --probMutDeposito 0.6474 \
+    --probMutClientes 0.1113 \
+    --probMutIntercambio 0.0327 \
+    --cierresFraccion 0.1913 \
+    --cierresOlvido 0.0513 \
+    --cierresPiso 0.0107 \
+    --cierresGenSesgo 129 \
+    --mejoresFraccion 0.2048 \
+    --mejoresTam 96 \
+    --mejoresProb 0.9799
+```
+
+Los mismos comandos sirven con `./main` en lugar de `make run`, quitando el `--` suelto.
 
 ### Parámetros
 
@@ -115,6 +115,32 @@ El algoritmo termina al completar `--nGeneraciones` generaciones.
 ```
 RESULTADO factible=si tiempo=7382 excesoCarga=0 excesoTiempo=0 fitness=7382 generaciones=100 segundos=0.019 semilla=7
 ```
+
+### Sintonización con irace
+
+Los parámetros se sintonizaron con [irace](https://cran.r-project.org/package=irace), una vez por set. Requiere R con el paquete `irace` instalado (`install.packages("irace")` desde R) y el ejecutable compilado con `make`.
+
+irace se ejecuta desde la carpeta `sintonizacion/`, porque las rutas de sus archivos son relativas a ella:
+
+```
+make
+cd sintonizacion
+irace --scenario scenario-B.txt | tee salida-B.txt    # set B: 5000 ejecuciones, unos 4 minutos
+irace --scenario scenario-E.txt | tee salida-E.txt    # set E: 1800 ejecuciones, unos 96 minutos
+```
+
+Si el comando `irace` no está en el `PATH`, se encuentra en la carpeta `bin/` del paquete; `Rscript -e 'cat(system.file("bin", package = "irace"))'` muestra su ubicación. Los tiempos corresponden a 8 ejecuciones en paralelo (`parallel` en cada escenario).
+
+| Archivo | Contenido |
+|---|---|
+| `parameters.txt` | Los 15 parámetros sintonizados y sus rangos. |
+| `scenario-B.txt`, `scenario-E.txt` | Escenario de cada set: instancias, presupuesto de ejecuciones, paralelismo y semilla. |
+| `instances-B.txt`, `instances-E.txt` | Instancias de entrenamiento: casos 11 a 13 del set B y 41 a 43 del set E. |
+| `target-runner` | Ejecuta `../main` con una configuración candidata y entrega su costo a irace. |
+| `salida-B.txt`, `salida-E.txt` | Salida de las sintonizaciones realizadas; al final están las mejores configuraciones. |
+| `irace-B.Rdata`, `irace-E.Rdata` | Registro completo de cada sintonización, legible desde R. |
+
+`target-runner` fija el presupuesto de evaluaciones según el set (50.000 en B y 2.000.000 en E) y calcula `--nGeneraciones` a partir de la población de cada candidata, de modo que todas gasten lo mismo. El costo que entrega es el tiempo de viaje de la solución, o 1.000.000.000 más los excesos de carga y de tiempo si no encontró una factible.
 
 ### Estructura del código
 

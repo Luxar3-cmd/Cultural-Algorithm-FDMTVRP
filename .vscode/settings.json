@@ -1,9 +1,0 @@
-{
-  "C_Cpp_Runner.msvcBatchPath": "",
-  "files.exclude": {
-    "Instancias": true,
-    "build": true,
-    "main": true,
-    "material": true
-  }
-}

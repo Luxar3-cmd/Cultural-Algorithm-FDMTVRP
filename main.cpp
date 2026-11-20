@@ -51,7 +51,6 @@ int main(int argc, char* argv[]) {
     inicializarInstancia(inst, argv[1]);
     imprimirResumen(inst);
     imprimirParametros(p);
-
     // ---------------------------------------------------------
     // 3. Semilla y generador aleatorio
     //    Un solo generador para toda la ejecución. La semilla viene de --semilla o fue sorteada
@@ -109,7 +108,7 @@ int main(int argc, char* argv[]) {
     for (int gen = 0; gen < p.nGeneraciones; gen++) {
         // Los hijos se guardan aparte: todos los padres de una generación salen de la misma población.
         vector<Individuo> nextGen = Poblacion;
-        uniform_int_distribution<int> distMejores(0, Mejores.size() - 1); // Posición dentro del archivo, que cambia de tamaño.
+        uniform_int_distribution<int> distMejores(0, Mejores.size() - 1); // Posición dentro del archivo.
 
         for (int i = 0; i < p.poblacion; i++) {
             const Individuo& Padre1 = Poblacion[i];

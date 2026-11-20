@@ -1,6 +1,11 @@
-Instancias/*
-material/Flexible_depot_Multi_trip_Vehicle_Routing_Problem-paper-inicial.pdf
-material/roadmap-decisiones*
+build/
+/main
+archive/
+.vscode/
+Pseudocode/
+comparaciones.md
+material/
 mis_notas.md
 animaciones/
-material/*
+demostracion*
+experimentos/trazas/

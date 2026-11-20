@@ -17,10 +17,10 @@
 # Exit with 0 if no error, with 1 in case of error
 ###############################################################################
 ## Find our own location.
-# BINDIR=$(dirname "$(readlink -f "$(type -P $0 || echo $0)")")
+BINDIR=$(dirname "$(readlink -f "$(type -P $0 || echo $0)")")
 
-# EDIT THIS: Path to your executable
-EXE=/home/imorales/Desktop/IAA_VRP/proyecto/FDMTVRP-Cultural-approach/main
+# Ejecutable: ../main respecto de este script (se compila con `make` en la raíz).
+EXE=${BINDIR}/../main
 # EDIT THIS: Specify how parameters are given to your executable
 
 
